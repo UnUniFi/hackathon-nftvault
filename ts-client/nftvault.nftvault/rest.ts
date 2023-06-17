@@ -50,6 +50,8 @@ export interface NftvaultQueryParamsResponse {
   params?: NftvaultParams;
 }
 
+export type NftvaultQueryVaultAccountAddressResponse = object;
+
 /**
 * `Any` contains an arbitrary serialized protocol buffer message along with a
 URL that describes the type of the serialized message.
@@ -421,6 +423,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryParams = (params: RequestParams = {}) =>
     this.request<NftvaultQueryParamsResponse, RpcStatus>({
       path: `/nftvault/nftvault/params`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryVaultAccountAddress
+   * @summary Queries a list of VaultAccountAddress items.
+   * @request GET:/nftvault/nftvault/vault_account_address/{classId}/{nftId}
+   */
+  queryVaultAccountAddress = (classId: string, nftId: string, params: RequestParams = {}) =>
+    this.request<NftvaultQueryVaultAccountAddressResponse, RpcStatus>({
+      path: `/nftvault/nftvault/vault_account_address/${classId}/${nftId}`,
       method: "GET",
       format: "json",
       ...params,

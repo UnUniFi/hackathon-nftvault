@@ -26,6 +26,11 @@ service Query {
 		option (google.api.http).get = "/nftvault/nftvault/allowed_channel";
 	}
 
+// Queries a list of VaultAccountAddress items.
+	rpc VaultAccountAddress(QueryVaultAccountAddressRequest) returns (QueryVaultAccountAddressResponse) {
+		option (google.api.http).get = "/nftvault/nftvault/vault_account_address";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -54,6 +59,15 @@ message QueryAllAllowedChannelRequest {
 message QueryAllAllowedChannelResponse {
 	repeated AllowedChannel allowedChannel = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryVaultAccountAddressRequest {
+  string class_id = 1;
+  string nft_id = 2;
+}
+
+message QueryVaultAccountAddressResponse {
+  string address = 1;
 }
 
 // this line is used by starport scaffolding # 3

@@ -1,6 +1,7 @@
 package types
 
 import (
+	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -14,12 +15,31 @@ func NewMsgSendRequestTransfer(
 	port string,
 	channelID string,
 	timeoutTimestamp uint64,
+	originNfttransferPort string,
+	originNfttransferChannelId string,
+	originClassId string,
+	nftId string,
+	msgs []sdk.Msg,
 ) *MsgSendRequestTransfer {
+	var messages []*codectypes.Any
+	for _, msg := range msgs {
+		protoAny, err := codectypes.NewAnyWithValue(msg)
+		if err != nil {
+			panic(err)
+		}
+		messages = append(messages, protoAny)
+	}
+
 	return &MsgSendRequestTransfer{
-		Creator:          creator,
-		Port:             port,
-		ChannelID:        channelID,
-		TimeoutTimestamp: timeoutTimestamp,
+		Creator:                    creator,
+		Port:                       port,
+		ChannelID:                  channelID,
+		TimeoutTimestamp:           timeoutTimestamp,
+		OriginNfttransferPort:      originNfttransferPort,
+		OriginNfttransferChannelId: originNfttransferChannelId,
+		OriginClassId:              originClassId,
+		NftId:                      nftId,
+		Messages:                   messages,
 	}
 }
 

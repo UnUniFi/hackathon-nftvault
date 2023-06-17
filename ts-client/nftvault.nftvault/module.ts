@@ -7,17 +7,11 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
-import { MsgLocalExecution } from "./types/nftvault/nftvault/tx";
 import { MsgSendRequestTransfer } from "./types/nftvault/nftvault/tx";
+import { MsgLocalExecution } from "./types/nftvault/nftvault/tx";
 
 
-export { MsgLocalExecution, MsgSendRequestTransfer };
-
-type sendMsgLocalExecutionParams = {
-  value: MsgLocalExecution,
-  fee?: StdFee,
-  memo?: string
-};
+export { MsgSendRequestTransfer, MsgLocalExecution };
 
 type sendMsgSendRequestTransferParams = {
   value: MsgSendRequestTransfer,
@@ -25,13 +19,19 @@ type sendMsgSendRequestTransferParams = {
   memo?: string
 };
 
-
-type msgLocalExecutionParams = {
+type sendMsgLocalExecutionParams = {
   value: MsgLocalExecution,
+  fee?: StdFee,
+  memo?: string
 };
+
 
 type msgSendRequestTransferParams = {
   value: MsgSendRequestTransfer,
+};
+
+type msgLocalExecutionParams = {
+  value: MsgLocalExecution,
 };
 
 
@@ -52,20 +52,6 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 
   return {
 		
-		async sendMsgLocalExecution({ value, fee, memo }: sendMsgLocalExecutionParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgLocalExecution: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgLocalExecution({ value: MsgLocalExecution.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgLocalExecution: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
 		async sendMsgSendRequestTransfer({ value, fee, memo }: sendMsgSendRequestTransferParams): Promise<DeliverTxResponse> {
 			if (!signer) {
 					throw new Error('TxClient:sendMsgSendRequestTransfer: Unable to sign Tx. Signer is not present.')
@@ -80,20 +66,34 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		
-		msgLocalExecution({ value }: msgLocalExecutionParams): EncodeObject {
-			try {
-				return { typeUrl: "/nftvault.nftvault.MsgLocalExecution", value: MsgLocalExecution.fromPartial( value ) }  
+		async sendMsgLocalExecution({ value, fee, memo }: sendMsgLocalExecutionParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgLocalExecution: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgLocalExecution({ value: MsgLocalExecution.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:MsgLocalExecution: Could not create message: ' + e.message)
+				throw new Error('TxClient:sendMsgLocalExecution: Could not broadcast Tx: '+ e.message)
 			}
 		},
+		
 		
 		msgSendRequestTransfer({ value }: msgSendRequestTransferParams): EncodeObject {
 			try {
 				return { typeUrl: "/nftvault.nftvault.MsgSendRequestTransfer", value: MsgSendRequestTransfer.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:MsgSendRequestTransfer: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgLocalExecution({ value }: msgLocalExecutionParams): EncodeObject {
+			try {
+				return { typeUrl: "/nftvault.nftvault.MsgLocalExecution", value: MsgLocalExecution.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgLocalExecution: Could not create message: ' + e.message)
 			}
 		},
 		

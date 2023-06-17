@@ -43,6 +43,7 @@ const getDefaultState = () => {
 				Params: {},
 				AllowedChannel: {},
 				AllowedChannelAll: {},
+				VaultAccountAddress: {},
 				
 				_Structure: {
 						AllowedChannel: getStructure(AllowedChannel.fromPartial({})),
@@ -97,6 +98,12 @@ export default {
 						(<any> params).query=null
 					}
 			return state.AllowedChannelAll[JSON.stringify(params)] ?? {}
+		},
+				getVaultAccountAddress: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.VaultAccountAddress[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -202,19 +209,28 @@ export default {
 		},
 		
 		
-		async sendMsgLocalExecution({ rootGetters }, { value, fee = [], memo = '' }) {
+		
+		
+		 		
+		
+		
+		async QueryVaultAccountAddress({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
 			try {
-				const client=await initClient(rootGetters)
-				const result = await client.NftvaultNftvault.tx.sendMsgLocalExecution({ value, fee: {amount: fee, gas: "200000"}, memo })
-				return result
+				const key = params ?? {};
+				const client = initClient(rootGetters);
+				let value= (await client.NftvaultNftvault.query.queryVaultAccountAddress( key.classId,  key.nftId)).data
+				
+					
+				commit('QUERY', { query: 'VaultAccountAddress', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryVaultAccountAddress', payload: { options: { all }, params: {...key},query }})
+				return getters['getVaultAccountAddress']( { params: {...key}, query}) ?? {}
 			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgLocalExecution:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgLocalExecution:Send Could not broadcast Tx: '+ e.message)
-				}
+				throw new Error('QueryClient:QueryVaultAccountAddress API Node Unavailable. Could not perform query: ' + e.message)
+				
 			}
 		},
+		
+		
 		async sendMsgSendRequestTransfer({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
@@ -228,20 +244,20 @@ export default {
 				}
 			}
 		},
-		
-		async MsgLocalExecution({ rootGetters }, { value }) {
+		async sendMsgLocalExecution({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
-				const client=initClient(rootGetters)
-				const msg = await client.NftvaultNftvault.tx.msgLocalExecution({value})
-				return msg
+				const client=await initClient(rootGetters)
+				const result = await client.NftvaultNftvault.tx.sendMsgLocalExecution({ value, fee: {amount: fee, gas: "200000"}, memo })
+				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
 					throw new Error('TxClient:MsgLocalExecution:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgLocalExecution:Create Could not create message: ' + e.message)
+				}else{
+					throw new Error('TxClient:MsgLocalExecution:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
+		
 		async MsgSendRequestTransfer({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
@@ -252,6 +268,19 @@ export default {
 					throw new Error('TxClient:MsgSendRequestTransfer:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:MsgSendRequestTransfer:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgLocalExecution({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.NftvaultNftvault.tx.msgLocalExecution({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgLocalExecution:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgLocalExecution:Create Could not create message: ' + e.message)
 				}
 			}
 		},

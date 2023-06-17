@@ -17,7 +17,9 @@ export interface NoData {
 
 /** RequestTransferPacketData defines a struct for the packet payload */
 export interface RequestTransferPacketData {
-  classId: string;
+  originNfttransferPort: string;
+  originNfttransferChannelId: string;
+  originClassId: string;
   nftId: string;
   tx: CosmosTx | undefined;
 }
@@ -138,19 +140,25 @@ export const NoData = {
 };
 
 function createBaseRequestTransferPacketData(): RequestTransferPacketData {
-  return { classId: "", nftId: "", tx: undefined };
+  return { originNfttransferPort: "", originNfttransferChannelId: "", originClassId: "", nftId: "", tx: undefined };
 }
 
 export const RequestTransferPacketData = {
   encode(message: RequestTransferPacketData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.classId !== "") {
-      writer.uint32(10).string(message.classId);
+    if (message.originNfttransferPort !== "") {
+      writer.uint32(10).string(message.originNfttransferPort);
+    }
+    if (message.originNfttransferChannelId !== "") {
+      writer.uint32(18).string(message.originNfttransferChannelId);
+    }
+    if (message.originClassId !== "") {
+      writer.uint32(26).string(message.originClassId);
     }
     if (message.nftId !== "") {
-      writer.uint32(18).string(message.nftId);
+      writer.uint32(34).string(message.nftId);
     }
     if (message.tx !== undefined) {
-      CosmosTx.encode(message.tx, writer.uint32(26).fork()).ldelim();
+      CosmosTx.encode(message.tx, writer.uint32(42).fork()).ldelim();
     }
     return writer;
   },
@@ -163,12 +171,18 @@ export const RequestTransferPacketData = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.classId = reader.string();
+          message.originNfttransferPort = reader.string();
           break;
         case 2:
-          message.nftId = reader.string();
+          message.originNfttransferChannelId = reader.string();
           break;
         case 3:
+          message.originClassId = reader.string();
+          break;
+        case 4:
+          message.nftId = reader.string();
+          break;
+        case 5:
           message.tx = CosmosTx.decode(reader, reader.uint32());
           break;
         default:
@@ -181,7 +195,11 @@ export const RequestTransferPacketData = {
 
   fromJSON(object: any): RequestTransferPacketData {
     return {
-      classId: isSet(object.classId) ? String(object.classId) : "",
+      originNfttransferPort: isSet(object.originNfttransferPort) ? String(object.originNfttransferPort) : "",
+      originNfttransferChannelId: isSet(object.originNfttransferChannelId)
+        ? String(object.originNfttransferChannelId)
+        : "",
+      originClassId: isSet(object.originClassId) ? String(object.originClassId) : "",
       nftId: isSet(object.nftId) ? String(object.nftId) : "",
       tx: isSet(object.tx) ? CosmosTx.fromJSON(object.tx) : undefined,
     };
@@ -189,7 +207,10 @@ export const RequestTransferPacketData = {
 
   toJSON(message: RequestTransferPacketData): unknown {
     const obj: any = {};
-    message.classId !== undefined && (obj.classId = message.classId);
+    message.originNfttransferPort !== undefined && (obj.originNfttransferPort = message.originNfttransferPort);
+    message.originNfttransferChannelId !== undefined
+      && (obj.originNfttransferChannelId = message.originNfttransferChannelId);
+    message.originClassId !== undefined && (obj.originClassId = message.originClassId);
     message.nftId !== undefined && (obj.nftId = message.nftId);
     message.tx !== undefined && (obj.tx = message.tx ? CosmosTx.toJSON(message.tx) : undefined);
     return obj;
@@ -197,7 +218,9 @@ export const RequestTransferPacketData = {
 
   fromPartial<I extends Exact<DeepPartial<RequestTransferPacketData>, I>>(object: I): RequestTransferPacketData {
     const message = createBaseRequestTransferPacketData();
-    message.classId = object.classId ?? "";
+    message.originNfttransferPort = object.originNfttransferPort ?? "";
+    message.originNfttransferChannelId = object.originNfttransferChannelId ?? "";
+    message.originClassId = object.originClassId ?? "";
     message.nftId = object.nftId ?? "";
     message.tx = (object.tx !== undefined && object.tx !== null) ? CosmosTx.fromPartial(object.tx) : undefined;
     return message;

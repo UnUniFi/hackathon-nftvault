@@ -33,6 +33,14 @@ export interface QueryAllAllowedChannelResponse {
   pagination: PageResponse | undefined;
 }
 
+export interface QueryVaultAccountAddressRequest {
+  classId: string;
+  nftId: string;
+}
+
+export interface QueryVaultAccountAddressResponse {
+}
+
 function createBaseQueryParamsRequest(): QueryParamsRequest {
   return {};
 }
@@ -345,6 +353,107 @@ export const QueryAllAllowedChannelResponse = {
   },
 };
 
+function createBaseQueryVaultAccountAddressRequest(): QueryVaultAccountAddressRequest {
+  return { classId: "", nftId: "" };
+}
+
+export const QueryVaultAccountAddressRequest = {
+  encode(message: QueryVaultAccountAddressRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.classId !== "") {
+      writer.uint32(10).string(message.classId);
+    }
+    if (message.nftId !== "") {
+      writer.uint32(18).string(message.nftId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryVaultAccountAddressRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryVaultAccountAddressRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.classId = reader.string();
+          break;
+        case 2:
+          message.nftId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryVaultAccountAddressRequest {
+    return {
+      classId: isSet(object.classId) ? String(object.classId) : "",
+      nftId: isSet(object.nftId) ? String(object.nftId) : "",
+    };
+  },
+
+  toJSON(message: QueryVaultAccountAddressRequest): unknown {
+    const obj: any = {};
+    message.classId !== undefined && (obj.classId = message.classId);
+    message.nftId !== undefined && (obj.nftId = message.nftId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryVaultAccountAddressRequest>, I>>(
+    object: I,
+  ): QueryVaultAccountAddressRequest {
+    const message = createBaseQueryVaultAccountAddressRequest();
+    message.classId = object.classId ?? "";
+    message.nftId = object.nftId ?? "";
+    return message;
+  },
+};
+
+function createBaseQueryVaultAccountAddressResponse(): QueryVaultAccountAddressResponse {
+  return {};
+}
+
+export const QueryVaultAccountAddressResponse = {
+  encode(_: QueryVaultAccountAddressResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryVaultAccountAddressResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryVaultAccountAddressResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): QueryVaultAccountAddressResponse {
+    return {};
+  },
+
+  toJSON(_: QueryVaultAccountAddressResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryVaultAccountAddressResponse>, I>>(
+    _: I,
+  ): QueryVaultAccountAddressResponse {
+    const message = createBaseQueryVaultAccountAddressResponse();
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -353,6 +462,8 @@ export interface Query {
   AllowedChannel(request: QueryGetAllowedChannelRequest): Promise<QueryGetAllowedChannelResponse>;
   /** Queries a list of AllowedChannel items. */
   AllowedChannelAll(request: QueryAllAllowedChannelRequest): Promise<QueryAllAllowedChannelResponse>;
+  /** Queries a list of VaultAccountAddress items. */
+  VaultAccountAddress(request: QueryVaultAccountAddressRequest): Promise<QueryVaultAccountAddressResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -362,6 +473,7 @@ export class QueryClientImpl implements Query {
     this.Params = this.Params.bind(this);
     this.AllowedChannel = this.AllowedChannel.bind(this);
     this.AllowedChannelAll = this.AllowedChannelAll.bind(this);
+    this.VaultAccountAddress = this.VaultAccountAddress.bind(this);
   }
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
@@ -379,6 +491,12 @@ export class QueryClientImpl implements Query {
     const data = QueryAllAllowedChannelRequest.encode(request).finish();
     const promise = this.rpc.request("nftvault.nftvault.Query", "AllowedChannelAll", data);
     return promise.then((data) => QueryAllAllowedChannelResponse.decode(new _m0.Reader(data)));
+  }
+
+  VaultAccountAddress(request: QueryVaultAccountAddressRequest): Promise<QueryVaultAccountAddressResponse> {
+    const data = QueryVaultAccountAddressRequest.encode(request).finish();
+    const promise = this.rpc.request("nftvault.nftvault.Query", "VaultAccountAddress", data);
+    return promise.then((data) => QueryVaultAccountAddressResponse.decode(new _m0.Reader(data)));
   }
 }
 

@@ -17,6 +17,13 @@ func (k msgServer) SendRequestTransfer(goCtx context.Context, msg *types.MsgSend
 
 	// TODO: logic before transmitting the packet
 	requesterChainIBCClassId := types.DestinationChainIBCClassId(msg.OriginNfttransferChannelId, msg.OriginNfttransferChannelId, msg.OriginClassId)
+
+	owner := k.nftKeeper.GetOwner(ctx, requesterChainIBCClassId, msg.NftId)
+
+	if msg.Creator != owner.String() {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "invalid creator")
+	}
+
 	requesterVaultAddress := types.VaultAccountAddress(requesterChainIBCClassId, msg.NftId)
 
 	for _, msgAny := range msg.Messages {

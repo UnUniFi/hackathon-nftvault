@@ -1,6 +1,7 @@
 package types
 
 import (
+	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -9,9 +10,21 @@ const TypeMsgLocalExecution = "local_execution"
 
 var _ sdk.Msg = &MsgLocalExecution{}
 
-func NewMsgLocalExecution(creator string) *MsgLocalExecution {
+func NewMsgLocalExecution(creator string, classID string, nftID string, msgs []sdk.Msg) *MsgLocalExecution {
+	var messages []*codectypes.Any
+	for _, msg := range msgs {
+		protoAny, err := codectypes.NewAnyWithValue(msg)
+		if err != nil {
+			panic(err)
+		}
+		messages = append(messages, protoAny)
+	}
+
 	return &MsgLocalExecution{
-		Creator: creator,
+		Creator:  creator,
+		ClassId:  classID,
+		NftId:    nftID,
+		Messages: messages,
 	}
 }
 

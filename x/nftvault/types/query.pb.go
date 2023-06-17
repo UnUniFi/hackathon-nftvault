@@ -297,6 +297,102 @@ func (m *QueryAllAllowedChannelResponse) GetPagination() *query.PageResponse {
 	return nil
 }
 
+type QueryVaultAccountAddressRequest struct {
+	ClassId string `protobuf:"bytes,1,opt,name=class_id,json=classId,proto3" json:"class_id,omitempty"`
+	NftId   string `protobuf:"bytes,2,opt,name=nft_id,json=nftId,proto3" json:"nft_id,omitempty"`
+}
+
+func (m *QueryVaultAccountAddressRequest) Reset()         { *m = QueryVaultAccountAddressRequest{} }
+func (m *QueryVaultAccountAddressRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryVaultAccountAddressRequest) ProtoMessage()    {}
+func (*QueryVaultAccountAddressRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_4d245f08f00c0c93, []int{6}
+}
+func (m *QueryVaultAccountAddressRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryVaultAccountAddressRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryVaultAccountAddressRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryVaultAccountAddressRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryVaultAccountAddressRequest.Merge(m, src)
+}
+func (m *QueryVaultAccountAddressRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryVaultAccountAddressRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryVaultAccountAddressRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryVaultAccountAddressRequest proto.InternalMessageInfo
+
+func (m *QueryVaultAccountAddressRequest) GetClassId() string {
+	if m != nil {
+		return m.ClassId
+	}
+	return ""
+}
+
+func (m *QueryVaultAccountAddressRequest) GetNftId() string {
+	if m != nil {
+		return m.NftId
+	}
+	return ""
+}
+
+type QueryVaultAccountAddressResponse struct {
+	Address string `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
+}
+
+func (m *QueryVaultAccountAddressResponse) Reset()         { *m = QueryVaultAccountAddressResponse{} }
+func (m *QueryVaultAccountAddressResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryVaultAccountAddressResponse) ProtoMessage()    {}
+func (*QueryVaultAccountAddressResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_4d245f08f00c0c93, []int{7}
+}
+func (m *QueryVaultAccountAddressResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryVaultAccountAddressResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryVaultAccountAddressResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryVaultAccountAddressResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryVaultAccountAddressResponse.Merge(m, src)
+}
+func (m *QueryVaultAccountAddressResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryVaultAccountAddressResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryVaultAccountAddressResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryVaultAccountAddressResponse proto.InternalMessageInfo
+
+func (m *QueryVaultAccountAddressResponse) GetAddress() string {
+	if m != nil {
+		return m.Address
+	}
+	return ""
+}
+
 func init() {
 	proto.RegisterType((*QueryParamsRequest)(nil), "nftvault.nftvault.QueryParamsRequest")
 	proto.RegisterType((*QueryParamsResponse)(nil), "nftvault.nftvault.QueryParamsResponse")
@@ -304,43 +400,52 @@ func init() {
 	proto.RegisterType((*QueryGetAllowedChannelResponse)(nil), "nftvault.nftvault.QueryGetAllowedChannelResponse")
 	proto.RegisterType((*QueryAllAllowedChannelRequest)(nil), "nftvault.nftvault.QueryAllAllowedChannelRequest")
 	proto.RegisterType((*QueryAllAllowedChannelResponse)(nil), "nftvault.nftvault.QueryAllAllowedChannelResponse")
+	proto.RegisterType((*QueryVaultAccountAddressRequest)(nil), "nftvault.nftvault.QueryVaultAccountAddressRequest")
+	proto.RegisterType((*QueryVaultAccountAddressResponse)(nil), "nftvault.nftvault.QueryVaultAccountAddressResponse")
 }
 
 func init() { proto.RegisterFile("nftvault/nftvault/query.proto", fileDescriptor_4d245f08f00c0c93) }
 
 var fileDescriptor_4d245f08f00c0c93 = []byte{
-	// 491 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x94, 0xc1, 0x6a, 0x14, 0x31,
-	0x18, 0xc7, 0x27, 0xad, 0x2e, 0x34, 0x42, 0xa1, 0xb1, 0x07, 0x77, 0x6c, 0xa3, 0x0d, 0xda, 0x4a,
-	0x0f, 0x49, 0xb7, 0x05, 0x3d, 0x79, 0xd8, 0x0a, 0x16, 0x2f, 0x5a, 0xe7, 0xe8, 0x45, 0xb2, 0x6d,
-	0x1c, 0x17, 0xd2, 0x64, 0x76, 0x93, 0xad, 0x56, 0xf1, 0xe2, 0x13, 0x08, 0xbe, 0x82, 0x57, 0x5f,
-	0xc0, 0x27, 0xe8, 0xb1, 0xe0, 0x45, 0x3c, 0x88, 0xec, 0xfa, 0x20, 0xb2, 0x49, 0x76, 0xb7, 0xe3,
-	0xcc, 0x74, 0x90, 0xde, 0x42, 0xf2, 0xfd, 0xff, 0xdf, 0xef, 0xe3, 0xfb, 0xcf, 0xc0, 0x55, 0xf5,
-	0xca, 0x1e, 0xf3, 0x81, 0xb4, 0x6c, 0x7a, 0xe8, 0x0d, 0x44, 0xff, 0x84, 0x66, 0x7d, 0x6d, 0x35,
-	0x5a, 0x9a, 0xdc, 0xd2, 0xc9, 0x21, 0x5e, 0x4e, 0x75, 0xaa, 0xdd, 0x2b, 0x1b, 0x9f, 0x7c, 0x61,
-	0xbc, 0x92, 0x6a, 0x9d, 0x4a, 0xc1, 0x78, 0xd6, 0x65, 0x5c, 0x29, 0x6d, 0xb9, 0xed, 0x6a, 0x65,
-	0xc2, 0xeb, 0xe6, 0x81, 0x36, 0x47, 0xda, 0xb0, 0x0e, 0x37, 0xc2, 0xfb, 0xb3, 0xe3, 0x56, 0x47,
-	0x58, 0xde, 0x62, 0x19, 0x4f, 0xbb, 0xca, 0x15, 0x87, 0x5a, 0x5c, 0x24, 0xca, 0x78, 0x9f, 0x1f,
-	0x4d, 0xbc, 0x36, 0x8a, 0xef, 0x5c, 0x4a, 0xfd, 0x46, 0x1c, 0xbe, 0x3c, 0x78, 0xcd, 0x95, 0x12,
-	0xd2, 0x17, 0x92, 0x65, 0x88, 0x9e, 0x8f, 0x5b, 0xed, 0x3b, 0x75, 0x22, 0x7a, 0x03, 0x61, 0x2c,
-	0x79, 0x0a, 0xaf, 0xe7, 0x6e, 0x4d, 0xa6, 0x95, 0x11, 0xe8, 0x01, 0x6c, 0xf8, 0x2e, 0x37, 0xc0,
-	0x6d, 0x70, 0xef, 0xda, 0x76, 0x93, 0x16, 0x26, 0xa7, 0x5e, 0xb2, 0x7b, 0xe5, 0xf4, 0xd7, 0xad,
-	0x28, 0x09, 0xe5, 0xe4, 0x21, 0x5c, 0x75, 0x7e, 0x7b, 0xc2, 0xb6, 0x3d, 0xc6, 0x23, 0x4f, 0x11,
-	0x1a, 0xa2, 0x15, 0xb8, 0x10, 0xb8, 0x9e, 0x1c, 0x3a, 0xf3, 0x85, 0x64, 0x76, 0x41, 0x7a, 0x10,
-	0x57, 0xc9, 0x03, 0xd9, 0x33, 0xb8, 0xc8, 0x73, 0x2f, 0x81, 0x70, 0xad, 0x84, 0x30, 0x6f, 0x11,
-	0x48, 0xff, 0x91, 0x93, 0x34, 0x10, 0xb7, 0xa5, 0x2c, 0x27, 0x7e, 0x0c, 0xe1, 0x6c, 0x2b, 0xa1,
-	0xdb, 0x3a, 0xf5, 0x2b, 0xa4, 0xe3, 0x15, 0x52, 0x1f, 0x91, 0xb0, 0x42, 0xba, 0xcf, 0x53, 0x11,
-	0xb4, 0xc9, 0x39, 0x25, 0xf9, 0x06, 0xc2, 0x70, 0x25, 0x9d, 0x2e, 0x18, 0x6e, 0xfe, 0x12, 0xc3,
-	0xa1, 0xbd, 0x1c, 0xfb, 0x9c, 0x63, 0xdf, 0xa8, 0x65, 0xf7, 0x34, 0xe7, 0xe1, 0xb7, 0x7f, 0xce,
-	0xc3, 0xab, 0x0e, 0x1e, 0xbd, 0x83, 0x0d, 0xbf, 0x79, 0x74, 0xb7, 0x84, 0xaa, 0x18, 0xb1, 0x78,
-	0xbd, 0xae, 0xcc, 0xb7, 0x23, 0x6b, 0x1f, 0xbf, 0xff, 0xf9, 0x3c, 0x77, 0x13, 0x35, 0x59, 0x55,
-	0xe4, 0xd1, 0x57, 0x00, 0x17, 0xf3, 0x73, 0xa3, 0xad, 0x2a, 0xf7, 0xaa, 0x04, 0xc6, 0xad, 0xff,
-	0x50, 0x04, 0xb4, 0xfb, 0x0e, 0x6d, 0x0b, 0x51, 0x56, 0xfb, 0xb5, 0xb1, 0xf7, 0xd3, 0x34, 0x7f,
-	0x40, 0x5f, 0x00, 0x5c, 0xca, 0x5b, 0xb6, 0xe5, 0x05, 0xc8, 0x55, 0x11, 0xac, 0x46, 0xae, 0x8c,
-	0x12, 0xd9, 0x74, 0xc8, 0x77, 0x10, 0xa9, 0x47, 0xde, 0xdd, 0x39, 0x1d, 0x62, 0x70, 0x36, 0xc4,
-	0xe0, 0xf7, 0x10, 0x83, 0x4f, 0x23, 0x1c, 0x9d, 0x8d, 0x70, 0xf4, 0x63, 0x84, 0xa3, 0x17, 0xcd,
-	0xa9, 0xe6, 0xed, 0x4c, 0x6e, 0x4f, 0x32, 0x61, 0x3a, 0x0d, 0xf7, 0x5b, 0xd9, 0xf9, 0x1b, 0x00,
-	0x00, 0xff, 0xff, 0x81, 0x43, 0xad, 0xf6, 0x33, 0x05, 0x00, 0x00,
+	// 598 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x94, 0x4f, 0x6b, 0x13, 0x4f,
+	0x18, 0xc7, 0xb3, 0xf9, 0xfd, 0x92, 0xda, 0x47, 0x28, 0x74, 0x5a, 0xa1, 0x89, 0xed, 0xb6, 0x5d,
+	0xb4, 0x2d, 0x39, 0xec, 0xe6, 0x0f, 0xe8, 0x45, 0x0f, 0xa9, 0x60, 0xc9, 0x45, 0x6b, 0x04, 0x0f,
+	0x5e, 0xc2, 0x24, 0x3b, 0x59, 0x03, 0xdb, 0x99, 0x4d, 0x66, 0x52, 0xad, 0xe2, 0xc5, 0xbb, 0x20,
+	0xf8, 0x16, 0xbc, 0x0a, 0x9e, 0x7d, 0x05, 0x3d, 0x16, 0xbc, 0x78, 0x12, 0x49, 0x7c, 0x21, 0x92,
+	0x99, 0xd9, 0xc4, 0x35, 0x3b, 0x0d, 0xc5, 0xcb, 0x32, 0x3b, 0xcf, 0xf3, 0xfd, 0x3e, 0x9f, 0xd9,
+	0xe7, 0x99, 0x85, 0x2d, 0xda, 0x15, 0xa7, 0x78, 0x18, 0x0a, 0x6f, 0xba, 0xe8, 0x0f, 0xc9, 0xe0,
+	0xcc, 0x8d, 0x06, 0x4c, 0x30, 0xb4, 0x1a, 0xef, 0xba, 0xf1, 0xa2, 0xb8, 0x1e, 0xb0, 0x80, 0xc9,
+	0xa8, 0x37, 0x59, 0xa9, 0xc4, 0xe2, 0x66, 0xc0, 0x58, 0x10, 0x12, 0x0f, 0x47, 0x3d, 0x0f, 0x53,
+	0xca, 0x04, 0x16, 0x3d, 0x46, 0xb9, 0x8e, 0x96, 0x3a, 0x8c, 0x9f, 0x30, 0xee, 0xb5, 0x31, 0x27,
+	0xca, 0xdf, 0x3b, 0xad, 0xb4, 0x89, 0xc0, 0x15, 0x2f, 0xc2, 0x41, 0x8f, 0xca, 0x64, 0x9d, 0x6b,
+	0xcf, 0x13, 0x45, 0x78, 0x80, 0x4f, 0x62, 0xaf, 0xfd, 0xf9, 0x38, 0x0e, 0x43, 0xf6, 0x92, 0xf8,
+	0xad, 0xce, 0x0b, 0x4c, 0x29, 0x09, 0x55, 0xa2, 0xb3, 0x0e, 0xe8, 0xc9, 0xa4, 0xd4, 0xb1, 0x54,
+	0x37, 0x49, 0x7f, 0x48, 0xb8, 0x70, 0x1e, 0xc1, 0x5a, 0x62, 0x97, 0x47, 0x8c, 0x72, 0x82, 0xee,
+	0x42, 0x5e, 0x55, 0xd9, 0xb0, 0x76, 0xac, 0x83, 0xeb, 0xd5, 0x82, 0x3b, 0x77, 0x72, 0x57, 0x49,
+	0x0e, 0xff, 0x3f, 0xff, 0xb1, 0x9d, 0x69, 0xea, 0x74, 0xe7, 0x3e, 0x6c, 0x49, 0xbf, 0x23, 0x22,
+	0xea, 0x0a, 0xe3, 0x81, 0xa2, 0xd0, 0x05, 0xd1, 0x26, 0x2c, 0x6b, 0xae, 0x86, 0x2f, 0xcd, 0x97,
+	0x9b, 0xb3, 0x0d, 0xa7, 0x0f, 0xb6, 0x49, 0xae, 0xc9, 0x1e, 0xc3, 0x0a, 0x4e, 0x44, 0x34, 0xe1,
+	0x6e, 0x0a, 0x61, 0xd2, 0x42, 0x93, 0xfe, 0x25, 0x77, 0x02, 0x4d, 0x5c, 0x0f, 0xc3, 0x74, 0xe2,
+	0x87, 0x00, 0xb3, 0xae, 0xe8, 0x6a, 0x7b, 0xae, 0x6a, 0xa1, 0x3b, 0x69, 0xa1, 0xab, 0x46, 0x44,
+	0xb7, 0xd0, 0x3d, 0xc6, 0x01, 0xd1, 0xda, 0xe6, 0x1f, 0x4a, 0xe7, 0xab, 0xa5, 0x0f, 0x97, 0x52,
+	0xe9, 0x92, 0xc3, 0xfd, 0xf7, 0x0f, 0x87, 0x43, 0x47, 0x09, 0xf6, 0xac, 0x64, 0xdf, 0x5f, 0xc8,
+	0xae, 0x68, 0x12, 0xf0, 0x4f, 0x61, 0x5b, 0xb2, 0x3f, 0x9b, 0xd4, 0xae, 0x77, 0x3a, 0x6c, 0x48,
+	0x45, 0xdd, 0xf7, 0x07, 0x84, 0xc7, 0xa3, 0x84, 0x0a, 0x70, 0xad, 0x13, 0x62, 0xce, 0x5b, 0xbd,
+	0xb8, 0xb1, 0x4b, 0xf2, 0xbd, 0xe1, 0xa3, 0x1b, 0x90, 0xa7, 0x5d, 0x31, 0x09, 0x64, 0x65, 0x20,
+	0x47, 0xbb, 0xa2, 0xe1, 0x3b, 0xf7, 0x60, 0xc7, 0x6c, 0xaa, 0x3f, 0xc9, 0x06, 0x2c, 0x61, 0xb5,
+	0x15, 0x9b, 0xea, 0xd7, 0xea, 0xfb, 0x1c, 0xe4, 0xa4, 0x1c, 0xbd, 0x86, 0xbc, 0x1a, 0x46, 0x74,
+	0x3b, 0xe5, 0x43, 0xcd, 0x4f, 0x7d, 0x71, 0x6f, 0x51, 0x9a, 0x2a, 0xee, 0xec, 0xbe, 0xfb, 0xf6,
+	0xeb, 0x63, 0xf6, 0x26, 0x2a, 0x78, 0xa6, 0x5b, 0x88, 0x3e, 0x5b, 0xb0, 0x92, 0x6c, 0x05, 0x2a,
+	0x9b, 0xdc, 0x4d, 0x97, 0xa2, 0x58, 0xb9, 0x82, 0x42, 0xa3, 0xdd, 0x91, 0x68, 0x65, 0xe4, 0x7a,
+	0x0b, 0x7f, 0x00, 0xde, 0x9b, 0xe9, 0x05, 0x7b, 0x8b, 0x3e, 0x59, 0xb0, 0x9a, 0xb4, 0xac, 0x87,
+	0x97, 0x20, 0x9b, 0x6e, 0x85, 0x19, 0xd9, 0x38, 0xdd, 0x4e, 0x49, 0x22, 0xdf, 0x42, 0xce, 0x62,
+	0x64, 0xf4, 0xc5, 0x82, 0xb5, 0x94, 0xb1, 0x40, 0x55, 0x53, 0x59, 0xf3, 0x60, 0x16, 0x6b, 0x57,
+	0xd2, 0x68, 0xd8, 0xb2, 0x84, 0x2d, 0xa1, 0x83, 0x14, 0x58, 0xf9, 0x6c, 0x61, 0x25, 0x6c, 0xe9,
+	0x79, 0x3c, 0xac, 0x9d, 0x8f, 0x6c, 0xeb, 0x62, 0x64, 0x5b, 0x3f, 0x47, 0xb6, 0xf5, 0x61, 0x6c,
+	0x67, 0x2e, 0xc6, 0x76, 0xe6, 0xfb, 0xd8, 0xce, 0x3c, 0x2f, 0x4c, 0x95, 0xaf, 0x66, 0x26, 0xe2,
+	0x2c, 0x22, 0xbc, 0x9d, 0x97, 0x3f, 0xe7, 0xda, 0xef, 0x00, 0x00, 0x00, 0xff, 0xff, 0x51, 0x5e,
+	0xbd, 0x51, 0x79, 0x06, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -361,6 +466,8 @@ type QueryClient interface {
 	AllowedChannel(ctx context.Context, in *QueryGetAllowedChannelRequest, opts ...grpc.CallOption) (*QueryGetAllowedChannelResponse, error)
 	// Queries a list of AllowedChannel items.
 	AllowedChannelAll(ctx context.Context, in *QueryAllAllowedChannelRequest, opts ...grpc.CallOption) (*QueryAllAllowedChannelResponse, error)
+	// Queries a list of VaultAccountAddress items.
+	VaultAccountAddress(ctx context.Context, in *QueryVaultAccountAddressRequest, opts ...grpc.CallOption) (*QueryVaultAccountAddressResponse, error)
 }
 
 type queryClient struct {
@@ -398,6 +505,15 @@ func (c *queryClient) AllowedChannelAll(ctx context.Context, in *QueryAllAllowed
 	return out, nil
 }
 
+func (c *queryClient) VaultAccountAddress(ctx context.Context, in *QueryVaultAccountAddressRequest, opts ...grpc.CallOption) (*QueryVaultAccountAddressResponse, error) {
+	out := new(QueryVaultAccountAddressResponse)
+	err := c.cc.Invoke(ctx, "/nftvault.nftvault.Query/VaultAccountAddress", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QueryServer is the server API for Query service.
 type QueryServer interface {
 	// Parameters queries the parameters of the module.
@@ -406,6 +522,8 @@ type QueryServer interface {
 	AllowedChannel(context.Context, *QueryGetAllowedChannelRequest) (*QueryGetAllowedChannelResponse, error)
 	// Queries a list of AllowedChannel items.
 	AllowedChannelAll(context.Context, *QueryAllAllowedChannelRequest) (*QueryAllAllowedChannelResponse, error)
+	// Queries a list of VaultAccountAddress items.
+	VaultAccountAddress(context.Context, *QueryVaultAccountAddressRequest) (*QueryVaultAccountAddressResponse, error)
 }
 
 // UnimplementedQueryServer can be embedded to have forward compatible implementations.
@@ -420,6 +538,9 @@ func (*UnimplementedQueryServer) AllowedChannel(ctx context.Context, req *QueryG
 }
 func (*UnimplementedQueryServer) AllowedChannelAll(ctx context.Context, req *QueryAllAllowedChannelRequest) (*QueryAllAllowedChannelResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AllowedChannelAll not implemented")
+}
+func (*UnimplementedQueryServer) VaultAccountAddress(ctx context.Context, req *QueryVaultAccountAddressRequest) (*QueryVaultAccountAddressResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VaultAccountAddress not implemented")
 }
 
 func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
@@ -480,6 +601,24 @@ func _Query_AllowedChannelAll_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_VaultAccountAddress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryVaultAccountAddressRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).VaultAccountAddress(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/nftvault.nftvault.Query/VaultAccountAddress",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).VaultAccountAddress(ctx, req.(*QueryVaultAccountAddressRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Query_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "nftvault.nftvault.Query",
 	HandlerType: (*QueryServer)(nil),
@@ -495,6 +634,10 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AllowedChannelAll",
 			Handler:    _Query_AllowedChannelAll_Handler,
+		},
+		{
+			MethodName: "VaultAccountAddress",
+			Handler:    _Query_VaultAccountAddress_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -704,6 +847,73 @@ func (m *QueryAllAllowedChannelResponse) MarshalToSizedBuffer(dAtA []byte) (int,
 	return len(dAtA) - i, nil
 }
 
+func (m *QueryVaultAccountAddressRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryVaultAccountAddressRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryVaultAccountAddressRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.NftId) > 0 {
+		i -= len(m.NftId)
+		copy(dAtA[i:], m.NftId)
+		i = encodeVarintQuery(dAtA, i, uint64(len(m.NftId)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.ClassId) > 0 {
+		i -= len(m.ClassId)
+		copy(dAtA[i:], m.ClassId)
+		i = encodeVarintQuery(dAtA, i, uint64(len(m.ClassId)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryVaultAccountAddressResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryVaultAccountAddressResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryVaultAccountAddressResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Address) > 0 {
+		i -= len(m.Address)
+		copy(dAtA[i:], m.Address)
+		i = encodeVarintQuery(dAtA, i, uint64(len(m.Address)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintQuery(dAtA []byte, offset int, v uint64) int {
 	offset -= sovQuery(v)
 	base := offset
@@ -786,6 +996,36 @@ func (m *QueryAllAllowedChannelResponse) Size() (n int) {
 	}
 	if m.Pagination != nil {
 		l = m.Pagination.Size()
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryVaultAccountAddressRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.ClassId)
+	if l > 0 {
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	l = len(m.NftId)
+	if l > 0 {
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryVaultAccountAddressResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Address)
+	if l > 0 {
 		n += 1 + l + sovQuery(uint64(l))
 	}
 	return n
@@ -1279,6 +1519,202 @@ func (m *QueryAllAllowedChannelResponse) Unmarshal(dAtA []byte) error {
 			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryVaultAccountAddressRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryVaultAccountAddressRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryVaultAccountAddressRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ClassId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ClassId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field NftId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.NftId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryVaultAccountAddressResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryVaultAccountAddressResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryVaultAccountAddressResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Address", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Address = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
