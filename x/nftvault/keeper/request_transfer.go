@@ -9,6 +9,9 @@ import (
 	channeltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
 	host "github.com/cosmos/ibc-go/v5/modules/core/24-host"
 	"nftvault/x/nftvault/types"
+
+	nfttransfertypes "github.com/bianjieai/nft-transfer/types"
+	transfertypes "github.com/cosmos/ibc-go/v5/modules/apps/transfer/types"
 )
 
 // TransmitRequestTransferPacket transmits the packet over IBC with the specified source port and source channel
@@ -74,6 +77,25 @@ func (k Keeper) OnRecvRequestTransferPacket(ctx sdk.Context, packet channeltypes
 	}
 
 	// TODO: packet reception logic
+	vaultAddress := types.VaultAccountAddress(data.ClassId, data.NftId)
+
+	for _, msgAny := range data.Tx.Messages {
+		var msg sdk.Msg
+		k.cdc.UnpackAny(msgAny, &msg)
+
+		switch msg := msg.(type) {
+		case *transfertypes.MsgTransfer:
+			if msg.Sender != vaultAddress.String() {
+				return packetAck, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "invalid receiver")
+			}
+		case *nfttransfertypes.MsgTransfer:
+			if msg.Sender != vaultAddress.String() {
+				return packetAck, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "invalid receiver")
+			}
+		default:
+			return packetAck, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, "unknown message type")
+		}
+	}
 
 	return packetAck, nil
 }
