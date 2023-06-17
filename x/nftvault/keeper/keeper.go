@@ -10,6 +10,12 @@ import (
 	"github.com/ignite/cli/ignite/pkg/cosmosibckeeper"
 	"github.com/tendermint/tendermint/libs/log"
 	"nftvault/x/nftvault/types"
+
+	authkeeper "github.com/cosmos/cosmos-sdk/x/auth/keeper"
+	nftkeeper "github.com/cosmos/cosmos-sdk/x/nft/keeper"
+	icatypes "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/types"
+	// nfttransferkeeper "github.com/cosmos/ibc-go/v5/modules/apps/nft-transfer/keeper"
+	transferkeeper "github.com/cosmos/ibc-go/v5/modules/apps/transfer/keeper"
 )
 
 type (
@@ -19,6 +25,13 @@ type (
 		storeKey   storetypes.StoreKey
 		memKey     storetypes.StoreKey
 		paramstore paramtypes.Subspace
+
+		authKeeper     authkeeper.AccountKeeper
+		nftKeeper      nftkeeper.Keeper
+		transferKeeper transferkeeper.Keeper
+		// nftTransferKeeper nfttransferkeeper.Keeper
+		msgRouter   icatypes.MessageRouter
+		ics4Wrapper types.ICS4Wrapper
 	}
 )
 

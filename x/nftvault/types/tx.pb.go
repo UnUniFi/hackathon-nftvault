@@ -6,6 +6,8 @@ package types
 import (
 	context "context"
 	fmt "fmt"
+	types "github.com/cosmos/cosmos-sdk/codec/types"
+	_ "github.com/gogo/protobuf/gogoproto"
 	grpc1 "github.com/gogo/protobuf/grpc"
 	proto "github.com/gogo/protobuf/proto"
 	grpc "google.golang.org/grpc"
@@ -28,7 +30,10 @@ var _ = math.Inf
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type MsgLocalExecution struct {
-	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Creator  string       `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	ClassId  string       `protobuf:"bytes,2,opt,name=class_id,json=classId,proto3" json:"class_id,omitempty"`
+	NftId    string       `protobuf:"bytes,3,opt,name=nft_id,json=nftId,proto3" json:"nft_id,omitempty"`
+	Messages []*types.Any `protobuf:"bytes,4,rep,name=messages,proto3" json:"messages,omitempty"`
 }
 
 func (m *MsgLocalExecution) Reset()         { *m = MsgLocalExecution{} }
@@ -71,6 +76,27 @@ func (m *MsgLocalExecution) GetCreator() string {
 	return ""
 }
 
+func (m *MsgLocalExecution) GetClassId() string {
+	if m != nil {
+		return m.ClassId
+	}
+	return ""
+}
+
+func (m *MsgLocalExecution) GetNftId() string {
+	if m != nil {
+		return m.NftId
+	}
+	return ""
+}
+
+func (m *MsgLocalExecution) GetMessages() []*types.Any {
+	if m != nil {
+		return m.Messages
+	}
+	return nil
+}
+
 type MsgLocalExecutionResponse struct {
 }
 
@@ -107,22 +133,26 @@ func (m *MsgLocalExecutionResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgLocalExecutionResponse proto.InternalMessageInfo
 
-type MsgRequestTransfer struct {
-	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+type MsgSendRequestTransfer struct {
+	Creator          string   `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Port             string   `protobuf:"bytes,2,opt,name=port,proto3" json:"port,omitempty"`
+	ChannelID        string   `protobuf:"bytes,3,opt,name=channelID,proto3" json:"channelID,omitempty"`
+	TimeoutTimestamp uint64   `protobuf:"varint,4,opt,name=timeoutTimestamp,proto3" json:"timeoutTimestamp,omitempty"`
+	Tx               CosmosTx `protobuf:"bytes,5,opt,name=tx,proto3" json:"tx"`
 }
 
-func (m *MsgRequestTransfer) Reset()         { *m = MsgRequestTransfer{} }
-func (m *MsgRequestTransfer) String() string { return proto.CompactTextString(m) }
-func (*MsgRequestTransfer) ProtoMessage()    {}
-func (*MsgRequestTransfer) Descriptor() ([]byte, []int) {
+func (m *MsgSendRequestTransfer) Reset()         { *m = MsgSendRequestTransfer{} }
+func (m *MsgSendRequestTransfer) String() string { return proto.CompactTextString(m) }
+func (*MsgSendRequestTransfer) ProtoMessage()    {}
+func (*MsgSendRequestTransfer) Descriptor() ([]byte, []int) {
 	return fileDescriptor_052e47e41f90e43f, []int{2}
 }
-func (m *MsgRequestTransfer) XXX_Unmarshal(b []byte) error {
+func (m *MsgSendRequestTransfer) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgRequestTransfer) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgSendRequestTransfer) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgRequestTransfer.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgSendRequestTransfer.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -132,40 +162,68 @@ func (m *MsgRequestTransfer) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return b[:n], nil
 	}
 }
-func (m *MsgRequestTransfer) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgRequestTransfer.Merge(m, src)
+func (m *MsgSendRequestTransfer) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgSendRequestTransfer.Merge(m, src)
 }
-func (m *MsgRequestTransfer) XXX_Size() int {
+func (m *MsgSendRequestTransfer) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgRequestTransfer) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgRequestTransfer.DiscardUnknown(m)
+func (m *MsgSendRequestTransfer) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgSendRequestTransfer.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgRequestTransfer proto.InternalMessageInfo
+var xxx_messageInfo_MsgSendRequestTransfer proto.InternalMessageInfo
 
-func (m *MsgRequestTransfer) GetCreator() string {
+func (m *MsgSendRequestTransfer) GetCreator() string {
 	if m != nil {
 		return m.Creator
 	}
 	return ""
 }
 
-type MsgRequestTransferResponse struct {
+func (m *MsgSendRequestTransfer) GetPort() string {
+	if m != nil {
+		return m.Port
+	}
+	return ""
 }
 
-func (m *MsgRequestTransferResponse) Reset()         { *m = MsgRequestTransferResponse{} }
-func (m *MsgRequestTransferResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgRequestTransferResponse) ProtoMessage()    {}
-func (*MsgRequestTransferResponse) Descriptor() ([]byte, []int) {
+func (m *MsgSendRequestTransfer) GetChannelID() string {
+	if m != nil {
+		return m.ChannelID
+	}
+	return ""
+}
+
+func (m *MsgSendRequestTransfer) GetTimeoutTimestamp() uint64 {
+	if m != nil {
+		return m.TimeoutTimestamp
+	}
+	return 0
+}
+
+func (m *MsgSendRequestTransfer) GetTx() CosmosTx {
+	if m != nil {
+		return m.Tx
+	}
+	return CosmosTx{}
+}
+
+type MsgSendRequestTransferResponse struct {
+}
+
+func (m *MsgSendRequestTransferResponse) Reset()         { *m = MsgSendRequestTransferResponse{} }
+func (m *MsgSendRequestTransferResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgSendRequestTransferResponse) ProtoMessage()    {}
+func (*MsgSendRequestTransferResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_052e47e41f90e43f, []int{3}
 }
-func (m *MsgRequestTransferResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgSendRequestTransferResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgRequestTransferResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgSendRequestTransferResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgRequestTransferResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgSendRequestTransferResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -175,37 +233,35 @@ func (m *MsgRequestTransferResponse) XXX_Marshal(b []byte, deterministic bool) (
 		return b[:n], nil
 	}
 }
-func (m *MsgRequestTransferResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgRequestTransferResponse.Merge(m, src)
+func (m *MsgSendRequestTransferResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgSendRequestTransferResponse.Merge(m, src)
 }
-func (m *MsgRequestTransferResponse) XXX_Size() int {
+func (m *MsgSendRequestTransferResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgRequestTransferResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgRequestTransferResponse.DiscardUnknown(m)
+func (m *MsgSendRequestTransferResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgSendRequestTransferResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgRequestTransferResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgSendRequestTransferResponse proto.InternalMessageInfo
 
-type MsgSendRequestTransferFt struct {
-	Creator          string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	Port             string `protobuf:"bytes,2,opt,name=port,proto3" json:"port,omitempty"`
-	ChannelID        string `protobuf:"bytes,3,opt,name=channelID,proto3" json:"channelID,omitempty"`
-	TimeoutTimestamp uint64 `protobuf:"varint,4,opt,name=timeoutTimestamp,proto3" json:"timeoutTimestamp,omitempty"`
+// CosmosTx contains a list of sdk.Msg's. It should be used when sending transactions to an SDK host chain.
+type CosmosTx struct {
+	Messages []*types.Any `protobuf:"bytes,1,rep,name=messages,proto3" json:"messages,omitempty"`
 }
 
-func (m *MsgSendRequestTransferFt) Reset()         { *m = MsgSendRequestTransferFt{} }
-func (m *MsgSendRequestTransferFt) String() string { return proto.CompactTextString(m) }
-func (*MsgSendRequestTransferFt) ProtoMessage()    {}
-func (*MsgSendRequestTransferFt) Descriptor() ([]byte, []int) {
+func (m *CosmosTx) Reset()         { *m = CosmosTx{} }
+func (m *CosmosTx) String() string { return proto.CompactTextString(m) }
+func (*CosmosTx) ProtoMessage()    {}
+func (*CosmosTx) Descriptor() ([]byte, []int) {
 	return fileDescriptor_052e47e41f90e43f, []int{4}
 }
-func (m *MsgSendRequestTransferFt) XXX_Unmarshal(b []byte) error {
+func (m *CosmosTx) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgSendRequestTransferFt) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *CosmosTx) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgSendRequestTransferFt.Marshal(b, m, deterministic)
+		return xxx_messageInfo_CosmosTx.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -215,225 +271,64 @@ func (m *MsgSendRequestTransferFt) XXX_Marshal(b []byte, deterministic bool) ([]
 		return b[:n], nil
 	}
 }
-func (m *MsgSendRequestTransferFt) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgSendRequestTransferFt.Merge(m, src)
+func (m *CosmosTx) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CosmosTx.Merge(m, src)
 }
-func (m *MsgSendRequestTransferFt) XXX_Size() int {
+func (m *CosmosTx) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgSendRequestTransferFt) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgSendRequestTransferFt.DiscardUnknown(m)
+func (m *CosmosTx) XXX_DiscardUnknown() {
+	xxx_messageInfo_CosmosTx.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgSendRequestTransferFt proto.InternalMessageInfo
+var xxx_messageInfo_CosmosTx proto.InternalMessageInfo
 
-func (m *MsgSendRequestTransferFt) GetCreator() string {
+func (m *CosmosTx) GetMessages() []*types.Any {
 	if m != nil {
-		return m.Creator
+		return m.Messages
 	}
-	return ""
+	return nil
 }
-
-func (m *MsgSendRequestTransferFt) GetPort() string {
-	if m != nil {
-		return m.Port
-	}
-	return ""
-}
-
-func (m *MsgSendRequestTransferFt) GetChannelID() string {
-	if m != nil {
-		return m.ChannelID
-	}
-	return ""
-}
-
-func (m *MsgSendRequestTransferFt) GetTimeoutTimestamp() uint64 {
-	if m != nil {
-		return m.TimeoutTimestamp
-	}
-	return 0
-}
-
-type MsgSendRequestTransferFtResponse struct {
-}
-
-func (m *MsgSendRequestTransferFtResponse) Reset()         { *m = MsgSendRequestTransferFtResponse{} }
-func (m *MsgSendRequestTransferFtResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgSendRequestTransferFtResponse) ProtoMessage()    {}
-func (*MsgSendRequestTransferFtResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_052e47e41f90e43f, []int{5}
-}
-func (m *MsgSendRequestTransferFtResponse) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *MsgSendRequestTransferFtResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_MsgSendRequestTransferFtResponse.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *MsgSendRequestTransferFtResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgSendRequestTransferFtResponse.Merge(m, src)
-}
-func (m *MsgSendRequestTransferFtResponse) XXX_Size() int {
-	return m.Size()
-}
-func (m *MsgSendRequestTransferFtResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgSendRequestTransferFtResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_MsgSendRequestTransferFtResponse proto.InternalMessageInfo
-
-type MsgSendRequestTransferNft struct {
-	Creator          string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-	Port             string `protobuf:"bytes,2,opt,name=port,proto3" json:"port,omitempty"`
-	ChannelID        string `protobuf:"bytes,3,opt,name=channelID,proto3" json:"channelID,omitempty"`
-	TimeoutTimestamp uint64 `protobuf:"varint,4,opt,name=timeoutTimestamp,proto3" json:"timeoutTimestamp,omitempty"`
-}
-
-func (m *MsgSendRequestTransferNft) Reset()         { *m = MsgSendRequestTransferNft{} }
-func (m *MsgSendRequestTransferNft) String() string { return proto.CompactTextString(m) }
-func (*MsgSendRequestTransferNft) ProtoMessage()    {}
-func (*MsgSendRequestTransferNft) Descriptor() ([]byte, []int) {
-	return fileDescriptor_052e47e41f90e43f, []int{6}
-}
-func (m *MsgSendRequestTransferNft) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *MsgSendRequestTransferNft) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_MsgSendRequestTransferNft.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *MsgSendRequestTransferNft) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgSendRequestTransferNft.Merge(m, src)
-}
-func (m *MsgSendRequestTransferNft) XXX_Size() int {
-	return m.Size()
-}
-func (m *MsgSendRequestTransferNft) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgSendRequestTransferNft.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_MsgSendRequestTransferNft proto.InternalMessageInfo
-
-func (m *MsgSendRequestTransferNft) GetCreator() string {
-	if m != nil {
-		return m.Creator
-	}
-	return ""
-}
-
-func (m *MsgSendRequestTransferNft) GetPort() string {
-	if m != nil {
-		return m.Port
-	}
-	return ""
-}
-
-func (m *MsgSendRequestTransferNft) GetChannelID() string {
-	if m != nil {
-		return m.ChannelID
-	}
-	return ""
-}
-
-func (m *MsgSendRequestTransferNft) GetTimeoutTimestamp() uint64 {
-	if m != nil {
-		return m.TimeoutTimestamp
-	}
-	return 0
-}
-
-type MsgSendRequestTransferNftResponse struct {
-}
-
-func (m *MsgSendRequestTransferNftResponse) Reset()         { *m = MsgSendRequestTransferNftResponse{} }
-func (m *MsgSendRequestTransferNftResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgSendRequestTransferNftResponse) ProtoMessage()    {}
-func (*MsgSendRequestTransferNftResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_052e47e41f90e43f, []int{7}
-}
-func (m *MsgSendRequestTransferNftResponse) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *MsgSendRequestTransferNftResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_MsgSendRequestTransferNftResponse.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *MsgSendRequestTransferNftResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgSendRequestTransferNftResponse.Merge(m, src)
-}
-func (m *MsgSendRequestTransferNftResponse) XXX_Size() int {
-	return m.Size()
-}
-func (m *MsgSendRequestTransferNftResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgSendRequestTransferNftResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_MsgSendRequestTransferNftResponse proto.InternalMessageInfo
 
 func init() {
 	proto.RegisterType((*MsgLocalExecution)(nil), "nftvault.nftvault.MsgLocalExecution")
 	proto.RegisterType((*MsgLocalExecutionResponse)(nil), "nftvault.nftvault.MsgLocalExecutionResponse")
-	proto.RegisterType((*MsgRequestTransfer)(nil), "nftvault.nftvault.MsgRequestTransfer")
-	proto.RegisterType((*MsgRequestTransferResponse)(nil), "nftvault.nftvault.MsgRequestTransferResponse")
-	proto.RegisterType((*MsgSendRequestTransferFt)(nil), "nftvault.nftvault.MsgSendRequestTransferFt")
-	proto.RegisterType((*MsgSendRequestTransferFtResponse)(nil), "nftvault.nftvault.MsgSendRequestTransferFtResponse")
-	proto.RegisterType((*MsgSendRequestTransferNft)(nil), "nftvault.nftvault.MsgSendRequestTransferNft")
-	proto.RegisterType((*MsgSendRequestTransferNftResponse)(nil), "nftvault.nftvault.MsgSendRequestTransferNftResponse")
+	proto.RegisterType((*MsgSendRequestTransfer)(nil), "nftvault.nftvault.MsgSendRequestTransfer")
+	proto.RegisterType((*MsgSendRequestTransferResponse)(nil), "nftvault.nftvault.MsgSendRequestTransferResponse")
+	proto.RegisterType((*CosmosTx)(nil), "nftvault.nftvault.CosmosTx")
 }
 
 func init() { proto.RegisterFile("nftvault/nftvault/tx.proto", fileDescriptor_052e47e41f90e43f) }
 
 var fileDescriptor_052e47e41f90e43f = []byte{
-	// 370 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xc4, 0x94, 0xcf, 0x4a, 0xf3, 0x40,
-	0x14, 0xc5, 0x3b, 0x5f, 0xcb, 0x27, 0xbd, 0x0b, 0xb5, 0x03, 0x4a, 0x1a, 0x4b, 0xa8, 0x51, 0xa1,
-	0x68, 0x1b, 0xc1, 0xfa, 0x04, 0xa2, 0x82, 0x60, 0xba, 0x88, 0x5d, 0xb9, 0x8b, 0xe9, 0x24, 0x16,
-	0xda, 0x99, 0x98, 0xb9, 0x91, 0x16, 0x7c, 0x08, 0xd1, 0x97, 0x72, 0x23, 0x74, 0xe9, 0x52, 0xda,
-	0x17, 0x11, 0x02, 0x89, 0x92, 0x3f, 0xd2, 0xae, 0xdc, 0xdd, 0xdc, 0xfc, 0x38, 0xe7, 0x30, 0x1c,
-	0x2e, 0xa8, 0xdc, 0xc5, 0x47, 0x3b, 0x1c, 0xe1, 0x71, 0x32, 0xe0, 0xc4, 0xf0, 0x03, 0x81, 0x82,
-	0xd6, 0xe2, 0x95, 0x11, 0x0f, 0x7a, 0x07, 0x6a, 0xa6, 0xf4, 0xae, 0x85, 0x63, 0x8f, 0x2e, 0x26,
-	0xcc, 0x09, 0x71, 0x28, 0x38, 0x55, 0x60, 0xcd, 0x09, 0x98, 0x8d, 0x22, 0x50, 0x48, 0x93, 0xb4,
-	0xaa, 0x56, 0xfc, 0xa9, 0xef, 0x40, 0x3d, 0x83, 0x5b, 0x4c, 0xfa, 0x82, 0x4b, 0xa6, 0x1b, 0x40,
-	0x4d, 0xe9, 0x59, 0xec, 0x21, 0x64, 0x12, 0xfb, 0x81, 0xcd, 0xa5, 0xcb, 0x82, 0x5f, 0xc4, 0x1a,
-	0xa0, 0x66, 0xf9, 0x44, 0xed, 0x85, 0x80, 0x62, 0x4a, 0xef, 0x86, 0xf1, 0x41, 0x0a, 0xb9, 0xc4,
-	0x62, 0x51, 0x4a, 0xa1, 0xe2, 0x8b, 0x00, 0x95, 0x7f, 0xd1, 0x3a, 0x9a, 0x69, 0x03, 0xaa, 0xce,
-	0xbd, 0xcd, 0x39, 0x1b, 0x5d, 0x9d, 0x2b, 0xe5, 0xe8, 0xc7, 0xf7, 0x82, 0x1e, 0xc2, 0x26, 0x0e,
-	0xc7, 0x4c, 0x84, 0xd8, 0x1f, 0x8e, 0x99, 0x44, 0x7b, 0xec, 0x2b, 0x95, 0x26, 0x69, 0x55, 0xac,
-	0xcc, 0x5e, 0xd7, 0xa1, 0x59, 0x94, 0x29, 0x09, 0xfe, 0x4a, 0xa2, 0x47, 0xca, 0x81, 0x7a, 0xee,
-	0xdf, 0x25, 0xdf, 0x83, 0xdd, 0xc2, 0x50, 0x71, 0xf4, 0x93, 0xf7, 0x32, 0x94, 0x4d, 0xe9, 0xd1,
-	0x01, 0xac, 0xa7, 0x2a, 0xb1, 0x6f, 0x64, 0xba, 0x63, 0x64, 0x9a, 0xa0, 0xb6, 0x97, 0xa1, 0x62,
-	0x37, 0xea, 0xc1, 0x46, 0xba, 0x2c, 0x07, 0xf9, 0x02, 0x29, 0x4c, 0xed, 0x2c, 0x85, 0x25, 0x46,
-	0x53, 0xd8, 0xca, 0xaf, 0xd1, 0x51, 0xbe, 0x4e, 0x2e, 0xac, 0x76, 0x57, 0x80, 0x13, 0xeb, 0x27,
-	0xd8, 0x2e, 0x28, 0x42, 0x7b, 0x69, 0xb9, 0x9e, 0x8b, 0xea, 0xe9, 0x2a, 0x74, 0xec, 0x7e, 0xd6,
-	0x7d, 0x9b, 0x6b, 0x64, 0x36, 0xd7, 0xc8, 0xe7, 0x5c, 0x23, 0xcf, 0x0b, 0xad, 0x34, 0x5b, 0x68,
-	0xa5, 0x8f, 0x85, 0x56, 0xba, 0xad, 0x27, 0xd7, 0x61, 0xf2, 0xe3, 0x50, 0x4c, 0x7d, 0x26, 0xef,
-	0xfe, 0x47, 0xc7, 0xa2, 0xfb, 0x15, 0x00, 0x00, 0xff, 0xff, 0x33, 0x56, 0x7c, 0x20, 0x4a, 0x04,
-	0x00, 0x00,
+	// 428 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x93, 0xcf, 0x6e, 0xd3, 0x40,
+	0x10, 0xc6, 0xb3, 0x89, 0x5b, 0xd2, 0xa9, 0x84, 0xe8, 0x52, 0x90, 0xe3, 0x22, 0x63, 0x45, 0x1c,
+	0x02, 0x42, 0x36, 0x4d, 0xaf, 0x5c, 0x28, 0x70, 0x88, 0x44, 0x2e, 0x26, 0x27, 0x2e, 0x68, 0x6b,
+	0xaf, 0x17, 0x4b, 0xf6, 0xae, 0xf1, 0xac, 0x91, 0xf3, 0x16, 0xf0, 0x4c, 0x5c, 0x7a, 0xec, 0x91,
+	0x13, 0xaa, 0x92, 0x17, 0x41, 0x71, 0x62, 0xf3, 0xc7, 0x16, 0xca, 0x6d, 0x66, 0xbe, 0xcf, 0xde,
+	0xdf, 0x7e, 0xa3, 0x05, 0x4b, 0x46, 0xfa, 0x0b, 0x2b, 0x12, 0xed, 0x35, 0x85, 0x2e, 0xdd, 0x2c,
+	0x57, 0x5a, 0xd1, 0x93, 0x7a, 0xe4, 0xd6, 0x85, 0x75, 0x2a, 0x94, 0x50, 0x95, 0xea, 0x6d, 0xaa,
+	0xad, 0xd1, 0x1a, 0x09, 0xa5, 0x44, 0xc2, 0xbd, 0xaa, 0xbb, 0x2a, 0x22, 0x8f, 0xc9, 0xe5, 0x56,
+	0x1a, 0x7f, 0x23, 0x70, 0x32, 0x47, 0xf1, 0x4e, 0x05, 0x2c, 0x79, 0x5b, 0xf2, 0xa0, 0xd0, 0xb1,
+	0x92, 0xd4, 0x84, 0x3b, 0x41, 0xce, 0x99, 0x56, 0xb9, 0x49, 0x1c, 0x32, 0x39, 0xf2, 0xeb, 0x96,
+	0x8e, 0x60, 0x18, 0x24, 0x0c, 0xf1, 0x63, 0x1c, 0x9a, 0xfd, 0x9d, 0xb4, 0xe9, 0x67, 0x21, 0x7d,
+	0x00, 0x87, 0x32, 0xd2, 0x1b, 0x61, 0x50, 0x09, 0x07, 0x32, 0xd2, 0xb3, 0x90, 0xbe, 0x80, 0x61,
+	0xca, 0x11, 0x99, 0xe0, 0x68, 0x1a, 0xce, 0x60, 0x72, 0x3c, 0x3d, 0x75, 0xb7, 0x3c, 0x6e, 0xcd,
+	0xe3, 0xbe, 0x92, 0x4b, 0xbf, 0x71, 0x8d, 0xcf, 0x60, 0xd4, 0x42, 0xf2, 0x39, 0x66, 0x4a, 0x22,
+	0x1f, 0x7f, 0x27, 0xf0, 0x70, 0x8e, 0xe2, 0x3d, 0x97, 0xa1, 0xcf, 0x3f, 0x17, 0x1c, 0xf5, 0x22,
+	0x67, 0x12, 0x23, 0x9e, 0xff, 0x87, 0x9a, 0x82, 0x91, 0xa9, 0x5c, 0xef, 0x88, 0xab, 0x9a, 0x3e,
+	0x82, 0xa3, 0xe0, 0x13, 0x93, 0x92, 0x27, 0xb3, 0x37, 0x3b, 0xe2, 0xdf, 0x03, 0xfa, 0x0c, 0xee,
+	0xe9, 0x38, 0xe5, 0xaa, 0xd0, 0x8b, 0x38, 0xe5, 0xa8, 0x59, 0x9a, 0x99, 0x86, 0x43, 0x26, 0x86,
+	0xdf, 0x9a, 0xd3, 0x73, 0xe8, 0xeb, 0xd2, 0x3c, 0x70, 0xc8, 0xe4, 0x78, 0x7a, 0xe6, 0xb6, 0x96,
+	0xe2, 0xbe, 0x56, 0x98, 0x2a, 0x5c, 0x94, 0x97, 0xc6, 0xf5, 0xcf, 0xc7, 0x3d, 0xbf, 0xaf, 0xcb,
+	0xb1, 0x03, 0x76, 0xf7, 0x25, 0x9a, 0x7b, 0xbe, 0x84, 0x61, 0xfd, 0xdd, 0x5f, 0x11, 0x92, 0x7d,
+	0x22, 0x9c, 0xde, 0x12, 0x18, 0xcc, 0x51, 0xd0, 0x10, 0xee, 0xfe, 0xb3, 0xda, 0x27, 0x1d, 0x80,
+	0xad, 0xb4, 0xad, 0xe7, 0xfb, 0xb8, 0x6a, 0x56, 0x8a, 0x70, 0xbf, 0x6b, 0x1f, 0x4f, 0xbb, 0x7f,
+	0xd2, 0x61, 0xb5, 0xce, 0xf7, 0xb6, 0xd6, 0x87, 0x5e, 0x5e, 0x5c, 0xaf, 0x6c, 0x72, 0xb3, 0xb2,
+	0xc9, 0xed, 0xca, 0x26, 0x5f, 0xd7, 0x76, 0xef, 0x66, 0x6d, 0xf7, 0x7e, 0xac, 0xed, 0xde, 0x87,
+	0x51, 0xf3, 0x54, 0xca, 0x3f, 0x5e, 0xcd, 0x32, 0xe3, 0x78, 0x75, 0x58, 0xe5, 0x75, 0xf1, 0x2b,
+	0x00, 0x00, 0xff, 0xff, 0x12, 0xb6, 0x8e, 0x65, 0x57, 0x03, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -449,9 +344,7 @@ const _ = grpc.SupportPackageIsVersion4
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type MsgClient interface {
 	LocalExecution(ctx context.Context, in *MsgLocalExecution, opts ...grpc.CallOption) (*MsgLocalExecutionResponse, error)
-	RequestTransfer(ctx context.Context, in *MsgRequestTransfer, opts ...grpc.CallOption) (*MsgRequestTransferResponse, error)
-	SendRequestTransferFt(ctx context.Context, in *MsgSendRequestTransferFt, opts ...grpc.CallOption) (*MsgSendRequestTransferFtResponse, error)
-	SendRequestTransferNft(ctx context.Context, in *MsgSendRequestTransferNft, opts ...grpc.CallOption) (*MsgSendRequestTransferNftResponse, error)
+	SendRequestTransfer(ctx context.Context, in *MsgSendRequestTransfer, opts ...grpc.CallOption) (*MsgSendRequestTransferResponse, error)
 }
 
 type msgClient struct {
@@ -471,27 +364,9 @@ func (c *msgClient) LocalExecution(ctx context.Context, in *MsgLocalExecution, o
 	return out, nil
 }
 
-func (c *msgClient) RequestTransfer(ctx context.Context, in *MsgRequestTransfer, opts ...grpc.CallOption) (*MsgRequestTransferResponse, error) {
-	out := new(MsgRequestTransferResponse)
-	err := c.cc.Invoke(ctx, "/nftvault.nftvault.Msg/RequestTransfer", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *msgClient) SendRequestTransferFt(ctx context.Context, in *MsgSendRequestTransferFt, opts ...grpc.CallOption) (*MsgSendRequestTransferFtResponse, error) {
-	out := new(MsgSendRequestTransferFtResponse)
-	err := c.cc.Invoke(ctx, "/nftvault.nftvault.Msg/SendRequestTransferFt", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *msgClient) SendRequestTransferNft(ctx context.Context, in *MsgSendRequestTransferNft, opts ...grpc.CallOption) (*MsgSendRequestTransferNftResponse, error) {
-	out := new(MsgSendRequestTransferNftResponse)
-	err := c.cc.Invoke(ctx, "/nftvault.nftvault.Msg/SendRequestTransferNft", in, out, opts...)
+func (c *msgClient) SendRequestTransfer(ctx context.Context, in *MsgSendRequestTransfer, opts ...grpc.CallOption) (*MsgSendRequestTransferResponse, error) {
+	out := new(MsgSendRequestTransferResponse)
+	err := c.cc.Invoke(ctx, "/nftvault.nftvault.Msg/SendRequestTransfer", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -501,9 +376,7 @@ func (c *msgClient) SendRequestTransferNft(ctx context.Context, in *MsgSendReque
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
 	LocalExecution(context.Context, *MsgLocalExecution) (*MsgLocalExecutionResponse, error)
-	RequestTransfer(context.Context, *MsgRequestTransfer) (*MsgRequestTransferResponse, error)
-	SendRequestTransferFt(context.Context, *MsgSendRequestTransferFt) (*MsgSendRequestTransferFtResponse, error)
-	SendRequestTransferNft(context.Context, *MsgSendRequestTransferNft) (*MsgSendRequestTransferNftResponse, error)
+	SendRequestTransfer(context.Context, *MsgSendRequestTransfer) (*MsgSendRequestTransferResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
@@ -513,14 +386,8 @@ type UnimplementedMsgServer struct {
 func (*UnimplementedMsgServer) LocalExecution(ctx context.Context, req *MsgLocalExecution) (*MsgLocalExecutionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LocalExecution not implemented")
 }
-func (*UnimplementedMsgServer) RequestTransfer(ctx context.Context, req *MsgRequestTransfer) (*MsgRequestTransferResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RequestTransfer not implemented")
-}
-func (*UnimplementedMsgServer) SendRequestTransferFt(ctx context.Context, req *MsgSendRequestTransferFt) (*MsgSendRequestTransferFtResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SendRequestTransferFt not implemented")
-}
-func (*UnimplementedMsgServer) SendRequestTransferNft(ctx context.Context, req *MsgSendRequestTransferNft) (*MsgSendRequestTransferNftResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SendRequestTransferNft not implemented")
+func (*UnimplementedMsgServer) SendRequestTransfer(ctx context.Context, req *MsgSendRequestTransfer) (*MsgSendRequestTransferResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendRequestTransfer not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
@@ -545,56 +412,20 @@ func _Msg_LocalExecution_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_RequestTransfer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgRequestTransfer)
+func _Msg_SendRequestTransfer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgSendRequestTransfer)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).RequestTransfer(ctx, in)
+		return srv.(MsgServer).SendRequestTransfer(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/nftvault.nftvault.Msg/RequestTransfer",
+		FullMethod: "/nftvault.nftvault.Msg/SendRequestTransfer",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).RequestTransfer(ctx, req.(*MsgRequestTransfer))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Msg_SendRequestTransferFt_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgSendRequestTransferFt)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).SendRequestTransferFt(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/nftvault.nftvault.Msg/SendRequestTransferFt",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).SendRequestTransferFt(ctx, req.(*MsgSendRequestTransferFt))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Msg_SendRequestTransferNft_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgSendRequestTransferNft)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).SendRequestTransferNft(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/nftvault.nftvault.Msg/SendRequestTransferNft",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).SendRequestTransferNft(ctx, req.(*MsgSendRequestTransferNft))
+		return srv.(MsgServer).SendRequestTransfer(ctx, req.(*MsgSendRequestTransfer))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -608,16 +439,8 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Msg_LocalExecution_Handler,
 		},
 		{
-			MethodName: "RequestTransfer",
-			Handler:    _Msg_RequestTransfer_Handler,
-		},
-		{
-			MethodName: "SendRequestTransferFt",
-			Handler:    _Msg_SendRequestTransferFt_Handler,
-		},
-		{
-			MethodName: "SendRequestTransferNft",
-			Handler:    _Msg_SendRequestTransferNft_Handler,
+			MethodName: "SendRequestTransfer",
+			Handler:    _Msg_SendRequestTransfer_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -644,6 +467,34 @@ func (m *MsgLocalExecution) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if len(m.Messages) > 0 {
+		for iNdEx := len(m.Messages) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Messages[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintTx(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x22
+		}
+	}
+	if len(m.NftId) > 0 {
+		i -= len(m.NftId)
+		copy(dAtA[i:], m.NftId)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.NftId)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.ClassId) > 0 {
+		i -= len(m.ClassId)
+		copy(dAtA[i:], m.ClassId)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.ClassId)))
+		i--
+		dAtA[i] = 0x12
+	}
 	if len(m.Creator) > 0 {
 		i -= len(m.Creator)
 		copy(dAtA[i:], m.Creator)
@@ -677,7 +528,7 @@ func (m *MsgLocalExecutionResponse) MarshalToSizedBuffer(dAtA []byte) (int, erro
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgRequestTransfer) Marshal() (dAtA []byte, err error) {
+func (m *MsgSendRequestTransfer) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -687,69 +538,26 @@ func (m *MsgRequestTransfer) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgRequestTransfer) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgSendRequestTransfer) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgRequestTransfer) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgSendRequestTransfer) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if len(m.Creator) > 0 {
-		i -= len(m.Creator)
-		copy(dAtA[i:], m.Creator)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
-		i--
-		dAtA[i] = 0xa
+	{
+		size, err := m.Tx.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintTx(dAtA, i, uint64(size))
 	}
-	return len(dAtA) - i, nil
-}
-
-func (m *MsgRequestTransferResponse) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *MsgRequestTransferResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *MsgRequestTransferResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	return len(dAtA) - i, nil
-}
-
-func (m *MsgSendRequestTransferFt) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *MsgSendRequestTransferFt) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *MsgSendRequestTransferFt) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
+	i--
+	dAtA[i] = 0x2a
 	if m.TimeoutTimestamp != 0 {
 		i = encodeVarintTx(dAtA, i, uint64(m.TimeoutTimestamp))
 		i--
@@ -779,7 +587,7 @@ func (m *MsgSendRequestTransferFt) MarshalToSizedBuffer(dAtA []byte) (int, error
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgSendRequestTransferFtResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgSendRequestTransferResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -789,12 +597,12 @@ func (m *MsgSendRequestTransferFtResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgSendRequestTransferFtResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgSendRequestTransferResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgSendRequestTransferFtResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgSendRequestTransferResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -802,7 +610,7 @@ func (m *MsgSendRequestTransferFtResponse) MarshalToSizedBuffer(dAtA []byte) (in
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgSendRequestTransferNft) Marshal() (dAtA []byte, err error) {
+func (m *CosmosTx) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -812,65 +620,30 @@ func (m *MsgSendRequestTransferNft) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgSendRequestTransferNft) MarshalTo(dAtA []byte) (int, error) {
+func (m *CosmosTx) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgSendRequestTransferNft) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *CosmosTx) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if m.TimeoutTimestamp != 0 {
-		i = encodeVarintTx(dAtA, i, uint64(m.TimeoutTimestamp))
-		i--
-		dAtA[i] = 0x20
+	if len(m.Messages) > 0 {
+		for iNdEx := len(m.Messages) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Messages[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintTx(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
 	}
-	if len(m.ChannelID) > 0 {
-		i -= len(m.ChannelID)
-		copy(dAtA[i:], m.ChannelID)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.ChannelID)))
-		i--
-		dAtA[i] = 0x1a
-	}
-	if len(m.Port) > 0 {
-		i -= len(m.Port)
-		copy(dAtA[i:], m.Port)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Port)))
-		i--
-		dAtA[i] = 0x12
-	}
-	if len(m.Creator) > 0 {
-		i -= len(m.Creator)
-		copy(dAtA[i:], m.Creator)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *MsgSendRequestTransferNftResponse) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *MsgSendRequestTransferNftResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *MsgSendRequestTransferNftResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
 	return len(dAtA) - i, nil
 }
 
@@ -895,6 +668,20 @@ func (m *MsgLocalExecution) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
+	l = len(m.ClassId)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.NftId)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	if len(m.Messages) > 0 {
+		for _, e := range m.Messages {
+			l = e.Size()
+			n += 1 + l + sovTx(uint64(l))
+		}
+	}
 	return n
 }
 
@@ -907,29 +694,7 @@ func (m *MsgLocalExecutionResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgRequestTransfer) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.Creator)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	return n
-}
-
-func (m *MsgRequestTransferResponse) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	return n
-}
-
-func (m *MsgSendRequestTransferFt) Size() (n int) {
+func (m *MsgSendRequestTransfer) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -950,10 +715,12 @@ func (m *MsgSendRequestTransferFt) Size() (n int) {
 	if m.TimeoutTimestamp != 0 {
 		n += 1 + sovTx(uint64(m.TimeoutTimestamp))
 	}
+	l = m.Tx.Size()
+	n += 1 + l + sovTx(uint64(l))
 	return n
 }
 
-func (m *MsgSendRequestTransferFtResponse) Size() (n int) {
+func (m *MsgSendRequestTransferResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -962,36 +729,18 @@ func (m *MsgSendRequestTransferFtResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgSendRequestTransferNft) Size() (n int) {
+func (m *CosmosTx) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	l = len(m.Creator)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
+	if len(m.Messages) > 0 {
+		for _, e := range m.Messages {
+			l = e.Size()
+			n += 1 + l + sovTx(uint64(l))
+		}
 	}
-	l = len(m.Port)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	l = len(m.ChannelID)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	if m.TimeoutTimestamp != 0 {
-		n += 1 + sovTx(uint64(m.TimeoutTimestamp))
-	}
-	return n
-}
-
-func (m *MsgSendRequestTransferNftResponse) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
 	return n
 }
 
@@ -1061,6 +810,104 @@ func (m *MsgLocalExecution) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ClassId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ClassId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field NftId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.NftId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Messages", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Messages = append(m.Messages, &types.Any{})
+			if err := m.Messages[len(m.Messages)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -1133,7 +980,7 @@ func (m *MsgLocalExecutionResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgRequestTransfer) Unmarshal(dAtA []byte) error {
+func (m *MsgSendRequestTransfer) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1156,142 +1003,10 @@ func (m *MsgRequestTransfer) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgRequestTransfer: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgSendRequestTransfer: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgRequestTransfer: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Creator = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTx(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTx
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *MsgRequestTransferResponse) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTx
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: MsgRequestTransferResponse: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgRequestTransferResponse: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTx(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTx
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *MsgSendRequestTransferFt) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTx
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: MsgSendRequestTransferFt: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgSendRequestTransferFt: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgSendRequestTransfer: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -1409,6 +1124,39 @@ func (m *MsgSendRequestTransferFt) Unmarshal(dAtA []byte) error {
 					break
 				}
 			}
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Tx", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.Tx.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipTx(dAtA[iNdEx:])
@@ -1430,7 +1178,7 @@ func (m *MsgSendRequestTransferFt) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgSendRequestTransferFtResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgSendRequestTransferResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1453,10 +1201,10 @@ func (m *MsgSendRequestTransferFtResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgSendRequestTransferFtResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgSendRequestTransferResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgSendRequestTransferFtResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgSendRequestTransferResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -1480,7 +1228,7 @@ func (m *MsgSendRequestTransferFtResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgSendRequestTransferNft) Unmarshal(dAtA []byte) error {
+func (m *CosmosTx) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1503,17 +1251,17 @@ func (m *MsgSendRequestTransferNft) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgSendRequestTransferNft: wiretype end group for non-group")
+			return fmt.Errorf("proto: CosmosTx: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgSendRequestTransferNft: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: CosmosTx: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Messages", wireType)
 			}
-			var stringLen uint64
+			var msglen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTx
@@ -1523,157 +1271,26 @@ func (m *MsgSendRequestTransferNft) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				msglen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
+			if msglen < 0 {
 				return ErrInvalidLengthTx
 			}
-			postIndex := iNdEx + intStringLen
+			postIndex := iNdEx + msglen
 			if postIndex < 0 {
 				return ErrInvalidLengthTx
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Creator = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 2:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Port", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Port = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 3:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ChannelID", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.ChannelID = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 4:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field TimeoutTimestamp", wireType)
-			}
-			m.TimeoutTimestamp = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.TimeoutTimestamp |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTx(dAtA[iNdEx:])
-			if err != nil {
+			m.Messages = append(m.Messages, &types.Any{})
+			if err := m.Messages[len(m.Messages)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTx
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *MsgSendRequestTransferNftResponse) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTx
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: MsgSendRequestTransferNftResponse: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgSendRequestTransferNftResponse: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipTx(dAtA[iNdEx:])

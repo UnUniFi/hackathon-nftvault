@@ -5,17 +5,17 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-const TypeMsgSendRequestTransferFt = "send_request_transfer_ft"
+const TypeMsgSendRequestTransfer = "send_request_transfer"
 
-var _ sdk.Msg = &MsgSendRequestTransferFt{}
+var _ sdk.Msg = &MsgSendRequestTransfer{}
 
-func NewMsgSendRequestTransferFt(
+func NewMsgSendRequestTransfer(
 	creator string,
 	port string,
 	channelID string,
 	timeoutTimestamp uint64,
-) *MsgSendRequestTransferFt {
-	return &MsgSendRequestTransferFt{
+) *MsgSendRequestTransfer {
+	return &MsgSendRequestTransfer{
 		Creator:          creator,
 		Port:             port,
 		ChannelID:        channelID,
@@ -23,15 +23,15 @@ func NewMsgSendRequestTransferFt(
 	}
 }
 
-func (msg *MsgSendRequestTransferFt) Route() string {
+func (msg *MsgSendRequestTransfer) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgSendRequestTransferFt) Type() string {
-	return TypeMsgSendRequestTransferFt
+func (msg *MsgSendRequestTransfer) Type() string {
+	return TypeMsgSendRequestTransfer
 }
 
-func (msg *MsgSendRequestTransferFt) GetSigners() []sdk.AccAddress {
+func (msg *MsgSendRequestTransfer) GetSigners() []sdk.AccAddress {
 	creator, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		panic(err)
@@ -39,12 +39,12 @@ func (msg *MsgSendRequestTransferFt) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{creator}
 }
 
-func (msg *MsgSendRequestTransferFt) GetSignBytes() []byte {
+func (msg *MsgSendRequestTransfer) GetSignBytes() []byte {
 	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 
-func (msg *MsgSendRequestTransferFt) ValidateBasic() error {
+func (msg *MsgSendRequestTransfer) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)

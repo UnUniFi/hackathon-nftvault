@@ -11,10 +11,10 @@ import (
 	"nftvault/x/nftvault/types"
 )
 
-// TransmitRequestTransferNftPacket transmits the packet over IBC with the specified source port and source channel
-func (k Keeper) TransmitRequestTransferNftPacket(
+// TransmitRequestTransferPacket transmits the packet over IBC with the specified source port and source channel
+func (k Keeper) TransmitRequestTransferPacket(
 	ctx sdk.Context,
-	packetData types.RequestTransferNftPacketData,
+	packetData types.RequestTransferPacketData,
 	sourcePort,
 	sourceChannel string,
 	timeoutHeight clienttypes.Height,
@@ -66,8 +66,8 @@ func (k Keeper) TransmitRequestTransferNftPacket(
 	return nil
 }
 
-// OnRecvRequestTransferNftPacket processes packet reception
-func (k Keeper) OnRecvRequestTransferNftPacket(ctx sdk.Context, packet channeltypes.Packet, data types.RequestTransferNftPacketData) (packetAck types.RequestTransferNftPacketAck, err error) {
+// OnRecvRequestTransferPacket processes packet reception
+func (k Keeper) OnRecvRequestTransferPacket(ctx sdk.Context, packet channeltypes.Packet, data types.RequestTransferPacketData) (packetAck types.RequestTransferPacketAck, err error) {
 	// validate packet data upon receiving
 	if err := data.ValidateBasic(); err != nil {
 		return packetAck, err
@@ -78,9 +78,9 @@ func (k Keeper) OnRecvRequestTransferNftPacket(ctx sdk.Context, packet channelty
 	return packetAck, nil
 }
 
-// OnAcknowledgementRequestTransferNftPacket responds to the the success or failure of a packet
+// OnAcknowledgementRequestTransferPacket responds to the the success or failure of a packet
 // acknowledgement written on the receiving chain.
-func (k Keeper) OnAcknowledgementRequestTransferNftPacket(ctx sdk.Context, packet channeltypes.Packet, data types.RequestTransferNftPacketData, ack channeltypes.Acknowledgement) error {
+func (k Keeper) OnAcknowledgementRequestTransferPacket(ctx sdk.Context, packet channeltypes.Packet, data types.RequestTransferPacketData, ack channeltypes.Acknowledgement) error {
 	switch dispatchedAck := ack.Response.(type) {
 	case *channeltypes.Acknowledgement_Error:
 
@@ -90,7 +90,7 @@ func (k Keeper) OnAcknowledgementRequestTransferNftPacket(ctx sdk.Context, packe
 		return nil
 	case *channeltypes.Acknowledgement_Result:
 		// Decode the packet acknowledgment
-		var packetAck types.RequestTransferNftPacketAck
+		var packetAck types.RequestTransferPacketAck
 
 		if err := types.ModuleCdc.UnmarshalJSON(dispatchedAck.Result, &packetAck); err != nil {
 			// The counter-party module doesn't implement the correct acknowledgment format
@@ -106,8 +106,8 @@ func (k Keeper) OnAcknowledgementRequestTransferNftPacket(ctx sdk.Context, packe
 	}
 }
 
-// OnTimeoutRequestTransferNftPacket responds to the case where a packet has not been transmitted because of a timeout
-func (k Keeper) OnTimeoutRequestTransferNftPacket(ctx sdk.Context, packet channeltypes.Packet, data types.RequestTransferNftPacketData) error {
+// OnTimeoutRequestTransferPacket responds to the case where a packet has not been transmitted because of a timeout
+func (k Keeper) OnTimeoutRequestTransferPacket(ctx sdk.Context, packet channeltypes.Packet, data types.RequestTransferPacketData) error {
 
 	// TODO: packet timeout logic
 

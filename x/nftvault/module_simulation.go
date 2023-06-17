@@ -28,10 +28,6 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgLocalExecution int = 100
 
-	opWeightMsgRequestTransfer = "op_weight_msg_request_transfer"
-	// TODO: Determine the simulation weight value
-	defaultWeightMsgRequestTransfer int = 100
-
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -76,17 +72,6 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgLocalExecution,
 		nftvaultsimulation.SimulateMsgLocalExecution(am.accountKeeper, am.bankKeeper, am.keeper),
-	))
-
-	var weightMsgRequestTransfer int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgRequestTransfer, &weightMsgRequestTransfer, nil,
-		func(_ *rand.Rand) {
-			weightMsgRequestTransfer = defaultWeightMsgRequestTransfer
-		},
-	)
-	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgRequestTransfer,
-		nftvaultsimulation.SimulateMsgRequestTransfer(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

@@ -8,34 +8,22 @@ export interface NftvaultPacketData {
     | NoData
     | undefined;
   /** this line is used by starport scaffolding # ibc/packet/proto/field */
-  requestTransferNftPacket:
-    | RequestTransferNftPacketData
-    | undefined;
-  /** this line is used by starport scaffolding # ibc/packet/proto/field/number */
-  requestTransferFtPacket: RequestTransferFtPacketData | undefined;
+  requestTransferPacket: RequestTransferPacketData | undefined;
 }
 
 export interface NoData {
 }
 
-/** RequestTransferFtPacketData defines a struct for the packet payload */
-export interface RequestTransferFtPacketData {
+/** RequestTransferPacketData defines a struct for the packet payload */
+export interface RequestTransferPacketData {
 }
 
-/** RequestTransferFtPacketAck defines a struct for the packet acknowledgment */
-export interface RequestTransferFtPacketAck {
-}
-
-/** RequestTransferNftPacketData defines a struct for the packet payload */
-export interface RequestTransferNftPacketData {
-}
-
-/** RequestTransferNftPacketAck defines a struct for the packet acknowledgment */
-export interface RequestTransferNftPacketAck {
+/** RequestTransferPacketAck defines a struct for the packet acknowledgment */
+export interface RequestTransferPacketAck {
 }
 
 function createBaseNftvaultPacketData(): NftvaultPacketData {
-  return { noData: undefined, requestTransferNftPacket: undefined, requestTransferFtPacket: undefined };
+  return { noData: undefined, requestTransferPacket: undefined };
 }
 
 export const NftvaultPacketData = {
@@ -43,11 +31,8 @@ export const NftvaultPacketData = {
     if (message.noData !== undefined) {
       NoData.encode(message.noData, writer.uint32(10).fork()).ldelim();
     }
-    if (message.requestTransferNftPacket !== undefined) {
-      RequestTransferNftPacketData.encode(message.requestTransferNftPacket, writer.uint32(26).fork()).ldelim();
-    }
-    if (message.requestTransferFtPacket !== undefined) {
-      RequestTransferFtPacketData.encode(message.requestTransferFtPacket, writer.uint32(18).fork()).ldelim();
+    if (message.requestTransferPacket !== undefined) {
+      RequestTransferPacketData.encode(message.requestTransferPacket, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -62,11 +47,8 @@ export const NftvaultPacketData = {
         case 1:
           message.noData = NoData.decode(reader, reader.uint32());
           break;
-        case 3:
-          message.requestTransferNftPacket = RequestTransferNftPacketData.decode(reader, reader.uint32());
-          break;
         case 2:
-          message.requestTransferFtPacket = RequestTransferFtPacketData.decode(reader, reader.uint32());
+          message.requestTransferPacket = RequestTransferPacketData.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -79,11 +61,8 @@ export const NftvaultPacketData = {
   fromJSON(object: any): NftvaultPacketData {
     return {
       noData: isSet(object.noData) ? NoData.fromJSON(object.noData) : undefined,
-      requestTransferNftPacket: isSet(object.requestTransferNftPacket)
-        ? RequestTransferNftPacketData.fromJSON(object.requestTransferNftPacket)
-        : undefined,
-      requestTransferFtPacket: isSet(object.requestTransferFtPacket)
-        ? RequestTransferFtPacketData.fromJSON(object.requestTransferFtPacket)
+      requestTransferPacket: isSet(object.requestTransferPacket)
+        ? RequestTransferPacketData.fromJSON(object.requestTransferPacket)
         : undefined,
     };
   },
@@ -91,11 +70,8 @@ export const NftvaultPacketData = {
   toJSON(message: NftvaultPacketData): unknown {
     const obj: any = {};
     message.noData !== undefined && (obj.noData = message.noData ? NoData.toJSON(message.noData) : undefined);
-    message.requestTransferNftPacket !== undefined && (obj.requestTransferNftPacket = message.requestTransferNftPacket
-      ? RequestTransferNftPacketData.toJSON(message.requestTransferNftPacket)
-      : undefined);
-    message.requestTransferFtPacket !== undefined && (obj.requestTransferFtPacket = message.requestTransferFtPacket
-      ? RequestTransferFtPacketData.toJSON(message.requestTransferFtPacket)
+    message.requestTransferPacket !== undefined && (obj.requestTransferPacket = message.requestTransferPacket
+      ? RequestTransferPacketData.toJSON(message.requestTransferPacket)
       : undefined);
     return obj;
   },
@@ -105,13 +81,9 @@ export const NftvaultPacketData = {
     message.noData = (object.noData !== undefined && object.noData !== null)
       ? NoData.fromPartial(object.noData)
       : undefined;
-    message.requestTransferNftPacket =
-      (object.requestTransferNftPacket !== undefined && object.requestTransferNftPacket !== null)
-        ? RequestTransferNftPacketData.fromPartial(object.requestTransferNftPacket)
-        : undefined;
-    message.requestTransferFtPacket =
-      (object.requestTransferFtPacket !== undefined && object.requestTransferFtPacket !== null)
-        ? RequestTransferFtPacketData.fromPartial(object.requestTransferFtPacket)
+    message.requestTransferPacket =
+      (object.requestTransferPacket !== undefined && object.requestTransferPacket !== null)
+        ? RequestTransferPacketData.fromPartial(object.requestTransferPacket)
         : undefined;
     return message;
   },
@@ -156,19 +128,19 @@ export const NoData = {
   },
 };
 
-function createBaseRequestTransferFtPacketData(): RequestTransferFtPacketData {
+function createBaseRequestTransferPacketData(): RequestTransferPacketData {
   return {};
 }
 
-export const RequestTransferFtPacketData = {
-  encode(_: RequestTransferFtPacketData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const RequestTransferPacketData = {
+  encode(_: RequestTransferPacketData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): RequestTransferFtPacketData {
+  decode(input: _m0.Reader | Uint8Array, length?: number): RequestTransferPacketData {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseRequestTransferFtPacketData();
+    const message = createBaseRequestTransferPacketData();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -180,34 +152,34 @@ export const RequestTransferFtPacketData = {
     return message;
   },
 
-  fromJSON(_: any): RequestTransferFtPacketData {
+  fromJSON(_: any): RequestTransferPacketData {
     return {};
   },
 
-  toJSON(_: RequestTransferFtPacketData): unknown {
+  toJSON(_: RequestTransferPacketData): unknown {
     const obj: any = {};
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<RequestTransferFtPacketData>, I>>(_: I): RequestTransferFtPacketData {
-    const message = createBaseRequestTransferFtPacketData();
+  fromPartial<I extends Exact<DeepPartial<RequestTransferPacketData>, I>>(_: I): RequestTransferPacketData {
+    const message = createBaseRequestTransferPacketData();
     return message;
   },
 };
 
-function createBaseRequestTransferFtPacketAck(): RequestTransferFtPacketAck {
+function createBaseRequestTransferPacketAck(): RequestTransferPacketAck {
   return {};
 }
 
-export const RequestTransferFtPacketAck = {
-  encode(_: RequestTransferFtPacketAck, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const RequestTransferPacketAck = {
+  encode(_: RequestTransferPacketAck, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): RequestTransferFtPacketAck {
+  decode(input: _m0.Reader | Uint8Array, length?: number): RequestTransferPacketAck {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseRequestTransferFtPacketAck();
+    const message = createBaseRequestTransferPacketAck();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -219,95 +191,17 @@ export const RequestTransferFtPacketAck = {
     return message;
   },
 
-  fromJSON(_: any): RequestTransferFtPacketAck {
+  fromJSON(_: any): RequestTransferPacketAck {
     return {};
   },
 
-  toJSON(_: RequestTransferFtPacketAck): unknown {
+  toJSON(_: RequestTransferPacketAck): unknown {
     const obj: any = {};
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<RequestTransferFtPacketAck>, I>>(_: I): RequestTransferFtPacketAck {
-    const message = createBaseRequestTransferFtPacketAck();
-    return message;
-  },
-};
-
-function createBaseRequestTransferNftPacketData(): RequestTransferNftPacketData {
-  return {};
-}
-
-export const RequestTransferNftPacketData = {
-  encode(_: RequestTransferNftPacketData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): RequestTransferNftPacketData {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseRequestTransferNftPacketData();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(_: any): RequestTransferNftPacketData {
-    return {};
-  },
-
-  toJSON(_: RequestTransferNftPacketData): unknown {
-    const obj: any = {};
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<RequestTransferNftPacketData>, I>>(_: I): RequestTransferNftPacketData {
-    const message = createBaseRequestTransferNftPacketData();
-    return message;
-  },
-};
-
-function createBaseRequestTransferNftPacketAck(): RequestTransferNftPacketAck {
-  return {};
-}
-
-export const RequestTransferNftPacketAck = {
-  encode(_: RequestTransferNftPacketAck, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): RequestTransferNftPacketAck {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseRequestTransferNftPacketAck();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(_: any): RequestTransferNftPacketAck {
-    return {};
-  },
-
-  toJSON(_: RequestTransferNftPacketAck): unknown {
-    const obj: any = {};
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<RequestTransferNftPacketAck>, I>>(_: I): RequestTransferNftPacketAck {
-    const message = createBaseRequestTransferNftPacketAck();
+  fromPartial<I extends Exact<DeepPartial<RequestTransferPacketAck>, I>>(_: I): RequestTransferPacketAck {
+    const message = createBaseRequestTransferPacketAck();
     return message;
   },
 };

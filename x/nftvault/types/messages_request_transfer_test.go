@@ -8,15 +8,15 @@ import (
 	"nftvault/testutil/sample"
 )
 
-func TestMsgSendRequestTransferFt_ValidateBasic(t *testing.T) {
+func TestMsgSendRequestTransfer_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgSendRequestTransferFt
+		msg  MsgSendRequestTransfer
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgSendRequestTransferFt{
+			msg: MsgSendRequestTransfer{
 				Creator:          "invalid_address",
 				Port:             "port",
 				ChannelID:        "channel-0",
@@ -25,7 +25,7 @@ func TestMsgSendRequestTransferFt_ValidateBasic(t *testing.T) {
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "invalid port",
-			msg: MsgSendRequestTransferFt{
+			msg: MsgSendRequestTransfer{
 				Creator:          sample.AccAddress(),
 				Port:             "",
 				ChannelID:        "channel-0",
@@ -34,7 +34,7 @@ func TestMsgSendRequestTransferFt_ValidateBasic(t *testing.T) {
 			err: sdkerrors.ErrInvalidRequest,
 		}, {
 			name: "invalid channel",
-			msg: MsgSendRequestTransferFt{
+			msg: MsgSendRequestTransfer{
 				Creator:          sample.AccAddress(),
 				Port:             "port",
 				ChannelID:        "",
@@ -43,7 +43,7 @@ func TestMsgSendRequestTransferFt_ValidateBasic(t *testing.T) {
 			err: sdkerrors.ErrInvalidRequest,
 		}, {
 			name: "invalid timeout",
-			msg: MsgSendRequestTransferFt{
+			msg: MsgSendRequestTransfer{
 				Creator:          sample.AccAddress(),
 				Port:             "port",
 				ChannelID:        "channel-0",
@@ -52,7 +52,7 @@ func TestMsgSendRequestTransferFt_ValidateBasic(t *testing.T) {
 			err: sdkerrors.ErrInvalidRequest,
 		}, {
 			name: "valid message",
-			msg: MsgSendRequestTransferFt{
+			msg: MsgSendRequestTransfer{
 				Creator:          sample.AccAddress(),
 				Port:             "port",
 				ChannelID:        "channel-0",

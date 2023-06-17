@@ -9,26 +9,18 @@ message NftvaultPacketData {
     oneof packet {
         NoData noData = 1;
         // this line is used by starport scaffolding # ibc/packet/proto/field
-				RequestTransferNftPacketData requestTransferNftPacket = 3; // this line is used by starport scaffolding # ibc/packet/proto/field/number
-				RequestTransferFtPacketData requestTransferFtPacket = 2; // this line is used by starport scaffolding # ibc/packet/proto/field/number
+				RequestTransferPacketData requestTransferPacket = 2; // this line is used by starport scaffolding # ibc/packet/proto/field/number
     }
 }
 
 message NoData {
 }
 
-// RequestTransferFtPacketData defines a struct for the packet payload
-message RequestTransferFtPacketData {
+// RequestTransferPacketData defines a struct for the packet payload
+message RequestTransferPacketData {
 }
 
-// RequestTransferFtPacketAck defines a struct for the packet acknowledgment
-message RequestTransferFtPacketAck {
-	}
-// RequestTransferNftPacketData defines a struct for the packet payload
-message RequestTransferNftPacketData {
-}
-
-// RequestTransferNftPacketAck defines a struct for the packet acknowledgment
-message RequestTransferNftPacketAck {
+// RequestTransferPacketAck defines a struct for the packet acknowledgment
+message RequestTransferPacketAck {
 	}
 // this line is used by starport scaffolding # ibc/packet/proto/message

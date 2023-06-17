@@ -8,12 +8,10 @@ import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
 import { MsgLocalExecution } from "./types/nftvault/nftvault/tx";
-import { MsgSendRequestTransferFt } from "./types/nftvault/nftvault/tx";
-import { MsgSendRequestTransferNft } from "./types/nftvault/nftvault/tx";
-import { MsgRequestTransfer } from "./types/nftvault/nftvault/tx";
+import { MsgSendRequestTransfer } from "./types/nftvault/nftvault/tx";
 
 
-export { MsgLocalExecution, MsgSendRequestTransferFt, MsgSendRequestTransferNft, MsgRequestTransfer };
+export { MsgLocalExecution, MsgSendRequestTransfer };
 
 type sendMsgLocalExecutionParams = {
   value: MsgLocalExecution,
@@ -21,20 +19,8 @@ type sendMsgLocalExecutionParams = {
   memo?: string
 };
 
-type sendMsgSendRequestTransferFtParams = {
-  value: MsgSendRequestTransferFt,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgSendRequestTransferNftParams = {
-  value: MsgSendRequestTransferNft,
-  fee?: StdFee,
-  memo?: string
-};
-
-type sendMsgRequestTransferParams = {
-  value: MsgRequestTransfer,
+type sendMsgSendRequestTransferParams = {
+  value: MsgSendRequestTransfer,
   fee?: StdFee,
   memo?: string
 };
@@ -44,16 +30,8 @@ type msgLocalExecutionParams = {
   value: MsgLocalExecution,
 };
 
-type msgSendRequestTransferFtParams = {
-  value: MsgSendRequestTransferFt,
-};
-
-type msgSendRequestTransferNftParams = {
-  value: MsgSendRequestTransferNft,
-};
-
-type msgRequestTransferParams = {
-  value: MsgRequestTransfer,
+type msgSendRequestTransferParams = {
+  value: MsgSendRequestTransfer,
 };
 
 
@@ -88,45 +66,17 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		async sendMsgSendRequestTransferFt({ value, fee, memo }: sendMsgSendRequestTransferFtParams): Promise<DeliverTxResponse> {
+		async sendMsgSendRequestTransfer({ value, fee, memo }: sendMsgSendRequestTransferParams): Promise<DeliverTxResponse> {
 			if (!signer) {
-					throw new Error('TxClient:sendMsgSendRequestTransferFt: Unable to sign Tx. Signer is not present.')
+					throw new Error('TxClient:sendMsgSendRequestTransfer: Unable to sign Tx. Signer is not present.')
 			}
 			try {			
 				const { address } = (await signer.getAccounts())[0]; 
 				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgSendRequestTransferFt({ value: MsgSendRequestTransferFt.fromPartial(value) })
+				let msg = this.msgSendRequestTransfer({ value: MsgSendRequestTransfer.fromPartial(value) })
 				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
 			} catch (e: any) {
-				throw new Error('TxClient:sendMsgSendRequestTransferFt: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgSendRequestTransferNft({ value, fee, memo }: sendMsgSendRequestTransferNftParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgSendRequestTransferNft: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgSendRequestTransferNft({ value: MsgSendRequestTransferNft.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgSendRequestTransferNft: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
-		async sendMsgRequestTransfer({ value, fee, memo }: sendMsgRequestTransferParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgRequestTransfer: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgRequestTransfer({ value: MsgRequestTransfer.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgRequestTransfer: Could not broadcast Tx: '+ e.message)
+				throw new Error('TxClient:sendMsgSendRequestTransfer: Could not broadcast Tx: '+ e.message)
 			}
 		},
 		
@@ -139,27 +89,11 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		msgSendRequestTransferFt({ value }: msgSendRequestTransferFtParams): EncodeObject {
+		msgSendRequestTransfer({ value }: msgSendRequestTransferParams): EncodeObject {
 			try {
-				return { typeUrl: "/nftvault.nftvault.MsgSendRequestTransferFt", value: MsgSendRequestTransferFt.fromPartial( value ) }  
+				return { typeUrl: "/nftvault.nftvault.MsgSendRequestTransfer", value: MsgSendRequestTransfer.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:MsgSendRequestTransferFt: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgSendRequestTransferNft({ value }: msgSendRequestTransferNftParams): EncodeObject {
-			try {
-				return { typeUrl: "/nftvault.nftvault.MsgSendRequestTransferNft", value: MsgSendRequestTransferNft.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgSendRequestTransferNft: Could not create message: ' + e.message)
-			}
-		},
-		
-		msgRequestTransfer({ value }: msgRequestTransferParams): EncodeObject {
-			try {
-				return { typeUrl: "/nftvault.nftvault.MsgRequestTransfer", value: MsgRequestTransfer.fromPartial( value ) }  
-			} catch (e: any) {
-				throw new Error('TxClient:MsgRequestTransfer: Could not create message: ' + e.message)
+				throw new Error('TxClient:MsgSendRequestTransfer: Could not create message: ' + e.message)
 			}
 		},
 		

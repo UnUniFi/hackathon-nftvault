@@ -25,8 +25,7 @@ const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 type NftvaultPacketData struct {
 	// Types that are valid to be assigned to Packet:
 	//	*NftvaultPacketData_NoData
-	//	*NftvaultPacketData_RequestTransferNftPacket
-	//	*NftvaultPacketData_RequestTransferFtPacket
+	//	*NftvaultPacketData_RequestTransferPacket
 	Packet isNftvaultPacketData_Packet `protobuf_oneof:"packet"`
 }
 
@@ -72,16 +71,12 @@ type isNftvaultPacketData_Packet interface {
 type NftvaultPacketData_NoData struct {
 	NoData *NoData `protobuf:"bytes,1,opt,name=noData,proto3,oneof" json:"noData,omitempty"`
 }
-type NftvaultPacketData_RequestTransferNftPacket struct {
-	RequestTransferNftPacket *RequestTransferNftPacketData `protobuf:"bytes,3,opt,name=requestTransferNftPacket,proto3,oneof" json:"requestTransferNftPacket,omitempty"`
-}
-type NftvaultPacketData_RequestTransferFtPacket struct {
-	RequestTransferFtPacket *RequestTransferFtPacketData `protobuf:"bytes,2,opt,name=requestTransferFtPacket,proto3,oneof" json:"requestTransferFtPacket,omitempty"`
+type NftvaultPacketData_RequestTransferPacket struct {
+	RequestTransferPacket *RequestTransferPacketData `protobuf:"bytes,2,opt,name=requestTransferPacket,proto3,oneof" json:"requestTransferPacket,omitempty"`
 }
 
-func (*NftvaultPacketData_NoData) isNftvaultPacketData_Packet()                   {}
-func (*NftvaultPacketData_RequestTransferNftPacket) isNftvaultPacketData_Packet() {}
-func (*NftvaultPacketData_RequestTransferFtPacket) isNftvaultPacketData_Packet()  {}
+func (*NftvaultPacketData_NoData) isNftvaultPacketData_Packet()                {}
+func (*NftvaultPacketData_RequestTransferPacket) isNftvaultPacketData_Packet() {}
 
 func (m *NftvaultPacketData) GetPacket() isNftvaultPacketData_Packet {
 	if m != nil {
@@ -97,16 +92,9 @@ func (m *NftvaultPacketData) GetNoData() *NoData {
 	return nil
 }
 
-func (m *NftvaultPacketData) GetRequestTransferNftPacket() *RequestTransferNftPacketData {
-	if x, ok := m.GetPacket().(*NftvaultPacketData_RequestTransferNftPacket); ok {
-		return x.RequestTransferNftPacket
-	}
-	return nil
-}
-
-func (m *NftvaultPacketData) GetRequestTransferFtPacket() *RequestTransferFtPacketData {
-	if x, ok := m.GetPacket().(*NftvaultPacketData_RequestTransferFtPacket); ok {
-		return x.RequestTransferFtPacket
+func (m *NftvaultPacketData) GetRequestTransferPacket() *RequestTransferPacketData {
+	if x, ok := m.GetPacket().(*NftvaultPacketData_RequestTransferPacket); ok {
+		return x.RequestTransferPacket
 	}
 	return nil
 }
@@ -115,8 +103,7 @@ func (m *NftvaultPacketData) GetRequestTransferFtPacket() *RequestTransferFtPack
 func (*NftvaultPacketData) XXX_OneofWrappers() []interface{} {
 	return []interface{}{
 		(*NftvaultPacketData_NoData)(nil),
-		(*NftvaultPacketData_RequestTransferNftPacket)(nil),
-		(*NftvaultPacketData_RequestTransferFtPacket)(nil),
+		(*NftvaultPacketData_RequestTransferPacket)(nil),
 	}
 }
 
@@ -156,22 +143,22 @@ func (m *NoData) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_NoData proto.InternalMessageInfo
 
-// RequestTransferFtPacketData defines a struct for the packet payload
-type RequestTransferFtPacketData struct {
+// RequestTransferPacketData defines a struct for the packet payload
+type RequestTransferPacketData struct {
 }
 
-func (m *RequestTransferFtPacketData) Reset()         { *m = RequestTransferFtPacketData{} }
-func (m *RequestTransferFtPacketData) String() string { return proto.CompactTextString(m) }
-func (*RequestTransferFtPacketData) ProtoMessage()    {}
-func (*RequestTransferFtPacketData) Descriptor() ([]byte, []int) {
+func (m *RequestTransferPacketData) Reset()         { *m = RequestTransferPacketData{} }
+func (m *RequestTransferPacketData) String() string { return proto.CompactTextString(m) }
+func (*RequestTransferPacketData) ProtoMessage()    {}
+func (*RequestTransferPacketData) Descriptor() ([]byte, []int) {
 	return fileDescriptor_7d1a08bd4694c086, []int{2}
 }
-func (m *RequestTransferFtPacketData) XXX_Unmarshal(b []byte) error {
+func (m *RequestTransferPacketData) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *RequestTransferFtPacketData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *RequestTransferPacketData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_RequestTransferFtPacketData.Marshal(b, m, deterministic)
+		return xxx_messageInfo_RequestTransferPacketData.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -181,34 +168,34 @@ func (m *RequestTransferFtPacketData) XXX_Marshal(b []byte, deterministic bool) 
 		return b[:n], nil
 	}
 }
-func (m *RequestTransferFtPacketData) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_RequestTransferFtPacketData.Merge(m, src)
+func (m *RequestTransferPacketData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RequestTransferPacketData.Merge(m, src)
 }
-func (m *RequestTransferFtPacketData) XXX_Size() int {
+func (m *RequestTransferPacketData) XXX_Size() int {
 	return m.Size()
 }
-func (m *RequestTransferFtPacketData) XXX_DiscardUnknown() {
-	xxx_messageInfo_RequestTransferFtPacketData.DiscardUnknown(m)
+func (m *RequestTransferPacketData) XXX_DiscardUnknown() {
+	xxx_messageInfo_RequestTransferPacketData.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_RequestTransferFtPacketData proto.InternalMessageInfo
+var xxx_messageInfo_RequestTransferPacketData proto.InternalMessageInfo
 
-// RequestTransferFtPacketAck defines a struct for the packet acknowledgment
-type RequestTransferFtPacketAck struct {
+// RequestTransferPacketAck defines a struct for the packet acknowledgment
+type RequestTransferPacketAck struct {
 }
 
-func (m *RequestTransferFtPacketAck) Reset()         { *m = RequestTransferFtPacketAck{} }
-func (m *RequestTransferFtPacketAck) String() string { return proto.CompactTextString(m) }
-func (*RequestTransferFtPacketAck) ProtoMessage()    {}
-func (*RequestTransferFtPacketAck) Descriptor() ([]byte, []int) {
+func (m *RequestTransferPacketAck) Reset()         { *m = RequestTransferPacketAck{} }
+func (m *RequestTransferPacketAck) String() string { return proto.CompactTextString(m) }
+func (*RequestTransferPacketAck) ProtoMessage()    {}
+func (*RequestTransferPacketAck) Descriptor() ([]byte, []int) {
 	return fileDescriptor_7d1a08bd4694c086, []int{3}
 }
-func (m *RequestTransferFtPacketAck) XXX_Unmarshal(b []byte) error {
+func (m *RequestTransferPacketAck) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *RequestTransferFtPacketAck) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *RequestTransferPacketAck) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_RequestTransferFtPacketAck.Marshal(b, m, deterministic)
+		return xxx_messageInfo_RequestTransferPacketAck.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -218,121 +205,42 @@ func (m *RequestTransferFtPacketAck) XXX_Marshal(b []byte, deterministic bool) (
 		return b[:n], nil
 	}
 }
-func (m *RequestTransferFtPacketAck) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_RequestTransferFtPacketAck.Merge(m, src)
+func (m *RequestTransferPacketAck) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RequestTransferPacketAck.Merge(m, src)
 }
-func (m *RequestTransferFtPacketAck) XXX_Size() int {
+func (m *RequestTransferPacketAck) XXX_Size() int {
 	return m.Size()
 }
-func (m *RequestTransferFtPacketAck) XXX_DiscardUnknown() {
-	xxx_messageInfo_RequestTransferFtPacketAck.DiscardUnknown(m)
+func (m *RequestTransferPacketAck) XXX_DiscardUnknown() {
+	xxx_messageInfo_RequestTransferPacketAck.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_RequestTransferFtPacketAck proto.InternalMessageInfo
-
-// RequestTransferNftPacketData defines a struct for the packet payload
-type RequestTransferNftPacketData struct {
-}
-
-func (m *RequestTransferNftPacketData) Reset()         { *m = RequestTransferNftPacketData{} }
-func (m *RequestTransferNftPacketData) String() string { return proto.CompactTextString(m) }
-func (*RequestTransferNftPacketData) ProtoMessage()    {}
-func (*RequestTransferNftPacketData) Descriptor() ([]byte, []int) {
-	return fileDescriptor_7d1a08bd4694c086, []int{4}
-}
-func (m *RequestTransferNftPacketData) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *RequestTransferNftPacketData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_RequestTransferNftPacketData.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *RequestTransferNftPacketData) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_RequestTransferNftPacketData.Merge(m, src)
-}
-func (m *RequestTransferNftPacketData) XXX_Size() int {
-	return m.Size()
-}
-func (m *RequestTransferNftPacketData) XXX_DiscardUnknown() {
-	xxx_messageInfo_RequestTransferNftPacketData.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_RequestTransferNftPacketData proto.InternalMessageInfo
-
-// RequestTransferNftPacketAck defines a struct for the packet acknowledgment
-type RequestTransferNftPacketAck struct {
-}
-
-func (m *RequestTransferNftPacketAck) Reset()         { *m = RequestTransferNftPacketAck{} }
-func (m *RequestTransferNftPacketAck) String() string { return proto.CompactTextString(m) }
-func (*RequestTransferNftPacketAck) ProtoMessage()    {}
-func (*RequestTransferNftPacketAck) Descriptor() ([]byte, []int) {
-	return fileDescriptor_7d1a08bd4694c086, []int{5}
-}
-func (m *RequestTransferNftPacketAck) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *RequestTransferNftPacketAck) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_RequestTransferNftPacketAck.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *RequestTransferNftPacketAck) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_RequestTransferNftPacketAck.Merge(m, src)
-}
-func (m *RequestTransferNftPacketAck) XXX_Size() int {
-	return m.Size()
-}
-func (m *RequestTransferNftPacketAck) XXX_DiscardUnknown() {
-	xxx_messageInfo_RequestTransferNftPacketAck.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_RequestTransferNftPacketAck proto.InternalMessageInfo
+var xxx_messageInfo_RequestTransferPacketAck proto.InternalMessageInfo
 
 func init() {
 	proto.RegisterType((*NftvaultPacketData)(nil), "nftvault.nftvault.NftvaultPacketData")
 	proto.RegisterType((*NoData)(nil), "nftvault.nftvault.NoData")
-	proto.RegisterType((*RequestTransferFtPacketData)(nil), "nftvault.nftvault.RequestTransferFtPacketData")
-	proto.RegisterType((*RequestTransferFtPacketAck)(nil), "nftvault.nftvault.RequestTransferFtPacketAck")
-	proto.RegisterType((*RequestTransferNftPacketData)(nil), "nftvault.nftvault.RequestTransferNftPacketData")
-	proto.RegisterType((*RequestTransferNftPacketAck)(nil), "nftvault.nftvault.RequestTransferNftPacketAck")
+	proto.RegisterType((*RequestTransferPacketData)(nil), "nftvault.nftvault.RequestTransferPacketData")
+	proto.RegisterType((*RequestTransferPacketAck)(nil), "nftvault.nftvault.RequestTransferPacketAck")
 }
 
 func init() { proto.RegisterFile("nftvault/nftvault/packet.proto", fileDescriptor_7d1a08bd4694c086) }
 
 var fileDescriptor_7d1a08bd4694c086 = []byte{
-	// 246 bytes of a gzipped FileDescriptorProto
+	// 208 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x92, 0xcb, 0x4b, 0x2b, 0x29,
 	0x4b, 0x2c, 0xcd, 0x29, 0xd1, 0x87, 0x33, 0x0a, 0x12, 0x93, 0xb3, 0x53, 0x4b, 0xf4, 0x0a, 0x8a,
-	0xf2, 0x4b, 0xf2, 0x85, 0x04, 0x61, 0xc2, 0x7a, 0x30, 0x86, 0xd2, 0x3a, 0x26, 0x2e, 0x21, 0x3f,
+	0xf2, 0x4b, 0xf2, 0x85, 0x04, 0x61, 0xc2, 0x7a, 0x30, 0x86, 0xd2, 0x4e, 0x46, 0x2e, 0x21, 0x3f,
 	0x28, 0x27, 0x00, 0xac, 0xd6, 0x25, 0xb1, 0x24, 0x51, 0xc8, 0x98, 0x8b, 0x2d, 0x2f, 0x1f, 0xc4,
 	0x92, 0x60, 0x54, 0x60, 0xd4, 0xe0, 0x36, 0x92, 0xd4, 0xc3, 0xd0, 0xaa, 0xe7, 0x07, 0x56, 0xe0,
-	0xc1, 0x10, 0x04, 0x55, 0x2a, 0x94, 0xcb, 0x25, 0x51, 0x94, 0x5a, 0x58, 0x9a, 0x5a, 0x5c, 0x12,
-	0x52, 0x94, 0x98, 0x57, 0x9c, 0x96, 0x5a, 0xe4, 0x97, 0x06, 0x35, 0x54, 0x82, 0x19, 0x6c, 0x8c,
-	0x3e, 0x16, 0x63, 0x82, 0x70, 0x68, 0x81, 0x1a, 0x8e, 0xd3, 0x48, 0xa1, 0x2c, 0x2e, 0x71, 0x34,
-	0x39, 0x37, 0x98, 0x6d, 0x4c, 0x60, 0xdb, 0xf4, 0x08, 0xdb, 0xe6, 0x86, 0x6a, 0x19, 0x2e, 0x03,
-	0x9d, 0x38, 0xb8, 0xd8, 0x20, 0x21, 0xa9, 0xc4, 0xc1, 0xc5, 0x06, 0xf1, 0xb8, 0x92, 0x2c, 0x97,
-	0x34, 0x1e, 0xd3, 0x94, 0x64, 0xb8, 0xa4, 0x70, 0x48, 0x3b, 0x26, 0x67, 0x2b, 0xc9, 0x71, 0xc9,
-	0xe0, 0xf3, 0x38, 0x16, 0xc3, 0xe1, 0xf2, 0x8e, 0xc9, 0xd9, 0x4e, 0xc6, 0x27, 0x1e, 0xc9, 0x31,
-	0x5e, 0x78, 0x24, 0xc7, 0xf8, 0xe0, 0x91, 0x1c, 0xe3, 0x84, 0xc7, 0x72, 0x0c, 0x17, 0x1e, 0xcb,
-	0x31, 0xdc, 0x78, 0x2c, 0xc7, 0x10, 0x25, 0x09, 0x8f, 0xfa, 0x0a, 0x44, 0x2a, 0x28, 0xa9, 0x2c,
-	0x48, 0x2d, 0x4e, 0x62, 0x03, 0xa7, 0x02, 0x63, 0x40, 0x00, 0x00, 0x00, 0xff, 0xff, 0x0e, 0x75,
-	0xf7, 0x0e, 0x27, 0x02, 0x00, 0x00,
+	0xc1, 0x10, 0x04, 0x55, 0x2a, 0x94, 0xc2, 0x25, 0x5a, 0x94, 0x5a, 0x58, 0x9a, 0x5a, 0x5c, 0x12,
+	0x52, 0x94, 0x98, 0x57, 0x9c, 0x96, 0x5a, 0x04, 0x31, 0x51, 0x82, 0x09, 0x6c, 0x86, 0x0e, 0x16,
+	0x33, 0x82, 0xb0, 0xa9, 0x87, 0x1a, 0x8b, 0xdd, 0x30, 0x27, 0x0e, 0x2e, 0x36, 0x88, 0xa7, 0x94,
+	0x38, 0xb8, 0xd8, 0x20, 0x6e, 0x50, 0x92, 0xe6, 0x92, 0xc4, 0x69, 0x92, 0x92, 0x14, 0x97, 0x04,
+	0x56, 0x49, 0xc7, 0xe4, 0x6c, 0x27, 0xe3, 0x13, 0x8f, 0xe4, 0x18, 0x2f, 0x3c, 0x92, 0x63, 0x7c,
+	0xf0, 0x48, 0x8e, 0x71, 0xc2, 0x63, 0x39, 0x86, 0x0b, 0x8f, 0xe5, 0x18, 0x6e, 0x3c, 0x96, 0x63,
+	0x88, 0x92, 0x84, 0x07, 0x61, 0x05, 0x22, 0x34, 0x4b, 0x2a, 0x0b, 0x52, 0x8b, 0x93, 0xd8, 0xc0,
+	0xa1, 0x69, 0x0c, 0x08, 0x00, 0x00, 0xff, 0xff, 0x68, 0x22, 0x6d, 0x1b, 0x6f, 0x01, 0x00, 0x00,
 }
 
 func (m *NftvaultPacketData) Marshal() (dAtA []byte, err error) {
@@ -388,16 +296,16 @@ func (m *NftvaultPacketData_NoData) MarshalToSizedBuffer(dAtA []byte) (int, erro
 	}
 	return len(dAtA) - i, nil
 }
-func (m *NftvaultPacketData_RequestTransferFtPacket) MarshalTo(dAtA []byte) (int, error) {
+func (m *NftvaultPacketData_RequestTransferPacket) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *NftvaultPacketData_RequestTransferFtPacket) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *NftvaultPacketData_RequestTransferPacket) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
-	if m.RequestTransferFtPacket != nil {
+	if m.RequestTransferPacket != nil {
 		{
-			size, err := m.RequestTransferFtPacket.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.RequestTransferPacket.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -406,27 +314,6 @@ func (m *NftvaultPacketData_RequestTransferFtPacket) MarshalToSizedBuffer(dAtA [
 		}
 		i--
 		dAtA[i] = 0x12
-	}
-	return len(dAtA) - i, nil
-}
-func (m *NftvaultPacketData_RequestTransferNftPacket) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *NftvaultPacketData_RequestTransferNftPacket) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	if m.RequestTransferNftPacket != nil {
-		{
-			size, err := m.RequestTransferNftPacket.MarshalToSizedBuffer(dAtA[:i])
-			if err != nil {
-				return 0, err
-			}
-			i -= size
-			i = encodeVarintPacket(dAtA, i, uint64(size))
-		}
-		i--
-		dAtA[i] = 0x1a
 	}
 	return len(dAtA) - i, nil
 }
@@ -453,7 +340,7 @@ func (m *NoData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *RequestTransferFtPacketData) Marshal() (dAtA []byte, err error) {
+func (m *RequestTransferPacketData) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -463,12 +350,12 @@ func (m *RequestTransferFtPacketData) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *RequestTransferFtPacketData) MarshalTo(dAtA []byte) (int, error) {
+func (m *RequestTransferPacketData) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *RequestTransferFtPacketData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *RequestTransferPacketData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -476,7 +363,7 @@ func (m *RequestTransferFtPacketData) MarshalToSizedBuffer(dAtA []byte) (int, er
 	return len(dAtA) - i, nil
 }
 
-func (m *RequestTransferFtPacketAck) Marshal() (dAtA []byte, err error) {
+func (m *RequestTransferPacketAck) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -486,58 +373,12 @@ func (m *RequestTransferFtPacketAck) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *RequestTransferFtPacketAck) MarshalTo(dAtA []byte) (int, error) {
+func (m *RequestTransferPacketAck) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *RequestTransferFtPacketAck) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	return len(dAtA) - i, nil
-}
-
-func (m *RequestTransferNftPacketData) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *RequestTransferNftPacketData) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RequestTransferNftPacketData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	return len(dAtA) - i, nil
-}
-
-func (m *RequestTransferNftPacketAck) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *RequestTransferNftPacketAck) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *RequestTransferNftPacketAck) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *RequestTransferPacketAck) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -580,26 +421,14 @@ func (m *NftvaultPacketData_NoData) Size() (n int) {
 	}
 	return n
 }
-func (m *NftvaultPacketData_RequestTransferFtPacket) Size() (n int) {
+func (m *NftvaultPacketData_RequestTransferPacket) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.RequestTransferFtPacket != nil {
-		l = m.RequestTransferFtPacket.Size()
-		n += 1 + l + sovPacket(uint64(l))
-	}
-	return n
-}
-func (m *NftvaultPacketData_RequestTransferNftPacket) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	if m.RequestTransferNftPacket != nil {
-		l = m.RequestTransferNftPacket.Size()
+	if m.RequestTransferPacket != nil {
+		l = m.RequestTransferPacket.Size()
 		n += 1 + l + sovPacket(uint64(l))
 	}
 	return n
@@ -613,7 +442,7 @@ func (m *NoData) Size() (n int) {
 	return n
 }
 
-func (m *RequestTransferFtPacketData) Size() (n int) {
+func (m *RequestTransferPacketData) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -622,25 +451,7 @@ func (m *RequestTransferFtPacketData) Size() (n int) {
 	return n
 }
 
-func (m *RequestTransferFtPacketAck) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	return n
-}
-
-func (m *RequestTransferNftPacketData) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	return n
-}
-
-func (m *RequestTransferNftPacketAck) Size() (n int) {
+func (m *RequestTransferPacketAck) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -721,7 +532,7 @@ func (m *NftvaultPacketData) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field RequestTransferFtPacket", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field RequestTransferPacket", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -748,46 +559,11 @@ func (m *NftvaultPacketData) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			v := &RequestTransferFtPacketData{}
+			v := &RequestTransferPacketData{}
 			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
-			m.Packet = &NftvaultPacketData_RequestTransferFtPacket{v}
-			iNdEx = postIndex
-		case 3:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field RequestTransferNftPacket", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowPacket
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthPacket
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthPacket
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			v := &RequestTransferNftPacketData{}
-			if err := v.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			m.Packet = &NftvaultPacketData_RequestTransferNftPacket{v}
+			m.Packet = &NftvaultPacketData_RequestTransferPacket{v}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -860,7 +636,7 @@ func (m *NoData) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *RequestTransferFtPacketData) Unmarshal(dAtA []byte) error {
+func (m *RequestTransferPacketData) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -883,10 +659,10 @@ func (m *RequestTransferFtPacketData) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: RequestTransferFtPacketData: wiretype end group for non-group")
+			return fmt.Errorf("proto: RequestTransferPacketData: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: RequestTransferFtPacketData: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: RequestTransferPacketData: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -910,7 +686,7 @@ func (m *RequestTransferFtPacketData) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *RequestTransferFtPacketAck) Unmarshal(dAtA []byte) error {
+func (m *RequestTransferPacketAck) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -933,110 +709,10 @@ func (m *RequestTransferFtPacketAck) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: RequestTransferFtPacketAck: wiretype end group for non-group")
+			return fmt.Errorf("proto: RequestTransferPacketAck: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: RequestTransferFtPacketAck: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		default:
-			iNdEx = preIndex
-			skippy, err := skipPacket(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthPacket
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *RequestTransferNftPacketData) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowPacket
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: RequestTransferNftPacketData: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: RequestTransferNftPacketData: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		default:
-			iNdEx = preIndex
-			skippy, err := skipPacket(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthPacket
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *RequestTransferNftPacketAck) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowPacket
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: RequestTransferNftPacketAck: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: RequestTransferNftPacketAck: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: RequestTransferPacketAck: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

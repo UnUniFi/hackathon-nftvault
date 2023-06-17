@@ -1,6 +1,9 @@
 syntax = "proto3";
 package nftvault.nftvault;
 
+import "gogoproto/gogo.proto";
+import "google/protobuf/any.proto";
+
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "nftvault/x/nftvault/types";
@@ -8,42 +11,33 @@ option go_package = "nftvault/x/nftvault/types";
 // Msg defines the Msg service.
 service Msg {
       rpc LocalExecution(MsgLocalExecution) returns (MsgLocalExecutionResponse);
-  rpc RequestTransfer(MsgRequestTransfer) returns (MsgRequestTransferResponse);
-  rpc SendRequestTransferFt(MsgSendRequestTransferFt) returns (MsgSendRequestTransferFtResponse);
-  rpc SendRequestTransferNft(MsgSendRequestTransferNft) returns (MsgSendRequestTransferNftResponse);
+  rpc SendRequestTransfer(MsgSendRequestTransfer) returns (MsgSendRequestTransferResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
 message MsgLocalExecution {
   string creator = 1;
+  string class_id = 2;
+  string nft_id = 3;
+  repeated google.protobuf.Any messages = 4;
 }
 
 message MsgLocalExecutionResponse {
 }
 
-message MsgRequestTransfer {
-  string creator = 1;
-}
-
-message MsgRequestTransferResponse {
-}
-
-message MsgSendRequestTransferFt {
+message MsgSendRequestTransfer {
   string creator = 1;
   string port = 2;
   string channelID = 3;
   uint64 timeoutTimestamp = 4;
+  CosmosTx tx = 5 [(gogoproto.nullable) = false];
 }
 
-message MsgSendRequestTransferFtResponse {
-}
-message MsgSendRequestTransferNft {
-  string creator = 1;
-  string port = 2;
-  string channelID = 3;
-  uint64 timeoutTimestamp = 4;
-}
-
-message MsgSendRequestTransferNftResponse {
+message MsgSendRequestTransferResponse {
 }
 // this line is used by starport scaffolding # proto/tx/message
+
+// CosmosTx contains a list of sdk.Msg's. It should be used when sending transactions to an SDK host chain.
+message CosmosTx {
+  repeated google.protobuf.Any messages = 1;
+}
