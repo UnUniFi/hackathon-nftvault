@@ -7,7 +7,23 @@ option go_package = "nftvault/x/nftvault/types";
 
 // Msg defines the Msg service.
 service Msg {
-    // this line is used by starport scaffolding # proto/tx/rpc
+      rpc LocalExecution(MsgLocalExecution) returns (MsgLocalExecutionResponse);
+  rpc RequestTransfer(MsgRequestTransfer) returns (MsgRequestTransferResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgLocalExecution {
+  string creator = 1;
+}
+
+message MsgLocalExecutionResponse {
+}
+
+message MsgRequestTransfer {
+  string creator = 1;
+}
+
+message MsgRequestTransferResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

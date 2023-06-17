@@ -9,6 +9,10 @@
  * ---------------------------------------------------------------
  */
 
+export type NftvaultMsgLocalExecutionResponse = object;
+
+export type NftvaultMsgRequestTransferResponse = object;
+
 /**
  * Params defines the parameters for the module.
  */

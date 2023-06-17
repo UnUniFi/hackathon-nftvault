@@ -7,10 +7,32 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
+import { MsgRequestTransfer } from "./types/nftvault/nftvault/tx";
+import { MsgLocalExecution } from "./types/nftvault/nftvault/tx";
 
 
-export {  };
+export { MsgRequestTransfer, MsgLocalExecution };
 
+type sendMsgRequestTransferParams = {
+  value: MsgRequestTransfer,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgLocalExecutionParams = {
+  value: MsgLocalExecution,
+  fee?: StdFee,
+  memo?: string
+};
+
+
+type msgRequestTransferParams = {
+  value: MsgRequestTransfer,
+};
+
+type msgLocalExecutionParams = {
+  value: MsgLocalExecution,
+};
 
 
 export const registry = new Registry(msgTypes);
@@ -30,6 +52,50 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 
   return {
 		
+		async sendMsgRequestTransfer({ value, fee, memo }: sendMsgRequestTransferParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgRequestTransfer: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgRequestTransfer({ value: MsgRequestTransfer.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgRequestTransfer: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgLocalExecution({ value, fee, memo }: sendMsgLocalExecutionParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgLocalExecution: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgLocalExecution({ value: MsgLocalExecution.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgLocalExecution: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		
+		msgRequestTransfer({ value }: msgRequestTransferParams): EncodeObject {
+			try {
+				return { typeUrl: "/nftvault.nftvault.MsgRequestTransfer", value: MsgRequestTransfer.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgRequestTransfer: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgLocalExecution({ value }: msgLocalExecutionParams): EncodeObject {
+			try {
+				return { typeUrl: "/nftvault.nftvault.MsgLocalExecution", value: MsgLocalExecution.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgLocalExecution: Could not create message: ' + e.message)
+			}
+		},
 		
 	}
 };
