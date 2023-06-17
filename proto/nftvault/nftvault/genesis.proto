@@ -1,0 +1,15 @@
+syntax = "proto3";
+package nftvault.nftvault;
+
+import "gogoproto/gogo.proto";
+import "nftvault/nftvault/params.proto";
+// this line is used by starport scaffolding # genesis/proto/import
+
+option go_package = "nftvault/x/nftvault/types";
+
+// GenesisState defines the nftvault module's genesis state.
+message GenesisState {
+  Params params = 1 [(gogoproto.nullable) = false];
+  string port_id = 2;
+  // this line is used by starport scaffolding # genesis/proto/state
+}

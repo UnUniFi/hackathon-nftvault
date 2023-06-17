@@ -1,8 +1,10 @@
 // THIS FILE IS GENERATED AUTOMATICALLY. DO NOT MODIFY.
 
+import NftvaultNftvault from './nftvault.nftvault'
 
 
 export default { 
+  NftvaultNftvault: load(NftvaultNftvault, 'nftvault.nftvault'),
   
 }
 

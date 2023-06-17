@@ -1,0 +1,18 @@
+syntax = "proto3";
+package nftvault.nftvault;
+
+// this line is used by starport scaffolding # proto/packet/import
+
+option go_package = "nftvault/x/nftvault/types";
+
+message NftvaultPacketData {
+    oneof packet {
+        NoData noData = 1;
+        // this line is used by starport scaffolding # ibc/packet/proto/field
+    }
+}
+
+message NoData {
+}
+
+// this line is used by starport scaffolding # ibc/packet/proto/message
