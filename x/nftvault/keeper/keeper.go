@@ -11,11 +11,8 @@ import (
 	"github.com/tendermint/tendermint/libs/log"
 	"nftvault/x/nftvault/types"
 
-	authkeeper "github.com/cosmos/cosmos-sdk/x/auth/keeper"
 	nftkeeper "github.com/cosmos/cosmos-sdk/x/nft/keeper"
 	icatypes "github.com/cosmos/ibc-go/v5/modules/apps/27-interchain-accounts/types"
-	// nfttransferkeeper "github.com/cosmos/ibc-go/v5/modules/apps/nft-transfer/keeper"
-	transferkeeper "github.com/cosmos/ibc-go/v5/modules/apps/transfer/keeper"
 )
 
 type (
@@ -26,10 +23,7 @@ type (
 		memKey     storetypes.StoreKey
 		paramstore paramtypes.Subspace
 
-		authKeeper     authkeeper.AccountKeeper
-		nftKeeper      nftkeeper.Keeper
-		transferKeeper transferkeeper.Keeper
-		// nftTransferKeeper nfttransferkeeper.Keeper
+		nftKeeper nftkeeper.Keeper
 		msgRouter icatypes.MessageRouter
 	}
 )
@@ -42,7 +36,8 @@ func NewKeeper(
 	channelKeeper cosmosibckeeper.ChannelKeeper,
 	portKeeper cosmosibckeeper.PortKeeper,
 	scopedKeeper cosmosibckeeper.ScopedKeeper,
-
+	nftKeeper nftkeeper.Keeper,
+	msgRouter icatypes.MessageRouter,
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {
@@ -61,6 +56,8 @@ func NewKeeper(
 		storeKey:   storeKey,
 		memKey:     memKey,
 		paramstore: ps,
+		nftKeeper:  nftKeeper,
+		msgRouter:  msgRouter,
 	}
 }
 

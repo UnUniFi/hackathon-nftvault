@@ -64,6 +64,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/mint"
 	mintkeeper "github.com/cosmos/cosmos-sdk/x/mint/keeper"
 	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
+	"github.com/cosmos/cosmos-sdk/x/nft"
+	nftkeeper "github.com/cosmos/cosmos-sdk/x/nft/keeper"
+	nftmodule "github.com/cosmos/cosmos-sdk/x/nft/module"
 	"github.com/cosmos/cosmos-sdk/x/params"
 	paramsclient "github.com/cosmos/cosmos-sdk/x/params/client"
 	paramskeeper "github.com/cosmos/cosmos-sdk/x/params/keeper"
@@ -159,6 +162,7 @@ var (
 		slashing.AppModuleBasic{},
 		feegrantmodule.AppModuleBasic{},
 		groupmodule.AppModuleBasic{},
+		nftmodule.AppModuleBasic{},
 		ibc.AppModuleBasic{},
 		upgrade.AppModuleBasic{},
 		evidence.AppModuleBasic{},
@@ -233,6 +237,7 @@ type App struct {
 	ICAHostKeeper    icahostkeeper.Keeper
 	FeeGrantKeeper   feegrantkeeper.Keeper
 	GroupKeeper      groupkeeper.Keeper
+	NftKeeper        nftkeeper.Keeper
 
 	// make scoped keepers public for test purposes
 	ScopedIBCKeeper      capabilitykeeper.ScopedKeeper
@@ -283,7 +288,7 @@ func New(
 		authtypes.StoreKey, authz.ModuleName, banktypes.StoreKey, stakingtypes.StoreKey,
 		minttypes.StoreKey, distrtypes.StoreKey, slashingtypes.StoreKey, govtypes.StoreKey,
 		paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey, feegrant.StoreKey, evidencetypes.StoreKey,
-		ibctransfertypes.StoreKey, icahosttypes.StoreKey, capabilitytypes.StoreKey, group.StoreKey,
+		ibctransfertypes.StoreKey, icahosttypes.StoreKey, capabilitytypes.StoreKey, group.StoreKey, nft.StoreKey,
 		icacontrollertypes.StoreKey,
 		nftvaultmoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
@@ -406,6 +411,13 @@ func New(
 		groupConfig,
 	)
 
+	app.NftKeeper = nftkeeper.NewKeeper(
+		keys[nft.StoreKey],
+		appCodec,
+		app.AccountKeeper,
+		app.BankKeeper,
+	)
+
 	app.FeeGrantKeeper = feegrantkeeper.NewKeeper(
 		appCodec,
 		keys[feegrant.StoreKey],
@@ -513,6 +525,8 @@ func New(
 		app.IBCKeeper.ChannelKeeper,
 		&app.IBCKeeper.PortKeeper,
 		scopedNftvaultKeeper,
+		app.NftKeeper,
+		app.MsgServiceRouter(),
 	)
 	nftvaultModule := nftvaultmodule.NewAppModule(appCodec, app.NftvaultKeeper, app.AccountKeeper, app.BankKeeper)
 
@@ -551,6 +565,7 @@ func New(
 		capability.NewAppModule(appCodec, *app.CapabilityKeeper),
 		feegrantmodule.NewAppModule(appCodec, app.AccountKeeper, app.BankKeeper, app.FeeGrantKeeper, app.interfaceRegistry),
 		groupmodule.NewAppModule(appCodec, app.GroupKeeper, app.AccountKeeper, app.BankKeeper, app.interfaceRegistry),
+		nftmodule.NewAppModule(appCodec, app.NftKeeper, app.AccountKeeper, app.BankKeeper, app.interfaceRegistry),
 		crisis.NewAppModule(&app.CrisisKeeper, skipGenesisInvariants),
 		gov.NewAppModule(appCodec, app.GovKeeper, app.AccountKeeper, app.BankKeeper),
 		mint.NewAppModule(appCodec, app.MintKeeper, app.AccountKeeper, minttypes.DefaultInflationCalculationFn),
@@ -591,6 +606,7 @@ func New(
 		authz.ModuleName,
 		feegrant.ModuleName,
 		group.ModuleName,
+		nft.ModuleName,
 		paramstypes.ModuleName,
 		vestingtypes.ModuleName,
 		nftvaultmoduletypes.ModuleName,
@@ -615,6 +631,7 @@ func New(
 		authz.ModuleName,
 		feegrant.ModuleName,
 		group.ModuleName,
+		nft.ModuleName,
 		paramstypes.ModuleName,
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
@@ -645,6 +662,7 @@ func New(
 		authz.ModuleName,
 		feegrant.ModuleName,
 		group.ModuleName,
+		nft.ModuleName,
 		paramstypes.ModuleName,
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
@@ -675,6 +693,7 @@ func New(
 		slashing.NewAppModule(appCodec, app.SlashingKeeper, app.AccountKeeper, app.BankKeeper, app.StakingKeeper),
 		params.NewAppModule(app.ParamsKeeper),
 		groupmodule.NewAppModule(appCodec, app.GroupKeeper, app.AccountKeeper, app.BankKeeper, app.interfaceRegistry),
+		nftmodule.NewAppModule(appCodec, app.NftKeeper, app.AccountKeeper, app.BankKeeper, app.interfaceRegistry),
 		evidence.NewAppModule(app.EvidenceKeeper),
 		ibc.NewAppModule(app.IBCKeeper),
 		transferModule,
