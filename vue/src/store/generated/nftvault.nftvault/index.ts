@@ -2,10 +2,14 @@ import { Client, registry, MissingWalletError } from 'nftvault-client-ts'
 
 import { NftvaultPacketData } from "nftvault-client-ts/nftvault.nftvault/types"
 import { NoData } from "nftvault-client-ts/nftvault.nftvault/types"
+import { RequestTransferFtPacketData } from "nftvault-client-ts/nftvault.nftvault/types"
+import { RequestTransferFtPacketAck } from "nftvault-client-ts/nftvault.nftvault/types"
+import { RequestTransferNftPacketData } from "nftvault-client-ts/nftvault.nftvault/types"
+import { RequestTransferNftPacketAck } from "nftvault-client-ts/nftvault.nftvault/types"
 import { Params } from "nftvault-client-ts/nftvault.nftvault/types"
 
 
-export { NftvaultPacketData, NoData, Params };
+export { NftvaultPacketData, NoData, RequestTransferFtPacketData, RequestTransferFtPacketAck, RequestTransferNftPacketData, RequestTransferNftPacketAck, Params };
 
 function initClient(vuexGetters) {
 	return new Client(vuexGetters['common/env/getEnv'], vuexGetters['common/wallet/signer'])
@@ -41,6 +45,10 @@ const getDefaultState = () => {
 				_Structure: {
 						NftvaultPacketData: getStructure(NftvaultPacketData.fromPartial({})),
 						NoData: getStructure(NoData.fromPartial({})),
+						RequestTransferFtPacketData: getStructure(RequestTransferFtPacketData.fromPartial({})),
+						RequestTransferFtPacketAck: getStructure(RequestTransferFtPacketAck.fromPartial({})),
+						RequestTransferNftPacketData: getStructure(RequestTransferNftPacketData.fromPartial({})),
+						RequestTransferNftPacketAck: getStructure(RequestTransferNftPacketAck.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),
 						
 		},
@@ -132,19 +140,6 @@ export default {
 		},
 		
 		
-		async sendMsgRequestTransfer({ rootGetters }, { value, fee = [], memo = '' }) {
-			try {
-				const client=await initClient(rootGetters)
-				const result = await client.NftvaultNftvault.tx.sendMsgRequestTransfer({ value, fee: {amount: fee, gas: "200000"}, memo })
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgRequestTransfer:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgRequestTransfer:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
 		async sendMsgLocalExecution({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
@@ -158,20 +153,46 @@ export default {
 				}
 			}
 		},
-		
-		async MsgRequestTransfer({ rootGetters }, { value }) {
+		async sendMsgSendRequestTransferFt({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
-				const client=initClient(rootGetters)
-				const msg = await client.NftvaultNftvault.tx.msgRequestTransfer({value})
-				return msg
+				const client=await initClient(rootGetters)
+				const result = await client.NftvaultNftvault.tx.sendMsgSendRequestTransferFt({ value, fee: {amount: fee, gas: "200000"}, memo })
+				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgRequestTransfer:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgRequestTransfer:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:MsgSendRequestTransferFt:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgSendRequestTransferFt:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
+		async sendMsgSendRequestTransferNft({ rootGetters }, { value, fee = [], memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const result = await client.NftvaultNftvault.tx.sendMsgSendRequestTransferNft({ value, fee: {amount: fee, gas: "200000"}, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgSendRequestTransferNft:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgSendRequestTransferNft:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgRequestTransfer({ rootGetters }, { value, fee = [], memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const result = await client.NftvaultNftvault.tx.sendMsgRequestTransfer({ value, fee: {amount: fee, gas: "200000"}, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgRequestTransfer:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgRequestTransfer:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		
 		async MsgLocalExecution({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)
@@ -182,6 +203,45 @@ export default {
 					throw new Error('TxClient:MsgLocalExecution:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:MsgLocalExecution:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgSendRequestTransferFt({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.NftvaultNftvault.tx.msgSendRequestTransferFt({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgSendRequestTransferFt:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgSendRequestTransferFt:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgSendRequestTransferNft({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.NftvaultNftvault.tx.msgSendRequestTransferNft({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgSendRequestTransferNft:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgSendRequestTransferNft:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgRequestTransfer({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.NftvaultNftvault.tx.msgRequestTransfer({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgRequestTransfer:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgRequestTransfer:Create Could not create message: ' + e.message)
 				}
 			}
 		},

@@ -9,6 +9,8 @@ option go_package = "nftvault/x/nftvault/types";
 service Msg {
       rpc LocalExecution(MsgLocalExecution) returns (MsgLocalExecutionResponse);
   rpc RequestTransfer(MsgRequestTransfer) returns (MsgRequestTransferResponse);
+  rpc SendRequestTransferFt(MsgSendRequestTransferFt) returns (MsgSendRequestTransferFtResponse);
+  rpc SendRequestTransferNft(MsgSendRequestTransferNft) returns (MsgSendRequestTransferNftResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -26,4 +28,22 @@ message MsgRequestTransfer {
 message MsgRequestTransferResponse {
 }
 
+message MsgSendRequestTransferFt {
+  string creator = 1;
+  string port = 2;
+  string channelID = 3;
+  uint64 timeoutTimestamp = 4;
+}
+
+message MsgSendRequestTransferFtResponse {
+}
+message MsgSendRequestTransferNft {
+  string creator = 1;
+  string port = 2;
+  string channelID = 3;
+  uint64 timeoutTimestamp = 4;
+}
+
+message MsgSendRequestTransferNftResponse {
+}
 // this line is used by starport scaffolding # proto/tx/message

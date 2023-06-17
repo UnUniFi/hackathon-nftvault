@@ -75574,6 +75574,10 @@ definitions:
     type: object
   nftvault.nftvault.MsgRequestTransferResponse:
     type: object
+  nftvault.nftvault.MsgSendRequestTransferFtResponse:
+    type: object
+  nftvault.nftvault.MsgSendRequestTransferNftResponse:
+    type: object
   nftvault.nftvault.Params:
     type: object
     description: Params defines the parameters for the module.

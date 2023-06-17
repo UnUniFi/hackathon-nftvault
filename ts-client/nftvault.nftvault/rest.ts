@@ -13,6 +13,10 @@ export type NftvaultMsgLocalExecutionResponse = object;
 
 export type NftvaultMsgRequestTransferResponse = object;
 
+export type NftvaultMsgSendRequestTransferFtResponse = object;
+
+export type NftvaultMsgSendRequestTransferNftResponse = object;
+
 /**
  * Params defines the parameters for the module.
  */
