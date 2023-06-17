@@ -30,14 +30,13 @@ message MsgSendRequestTransfer {
   string port = 2;
   string channelID = 3;
   uint64 timeoutTimestamp = 4;
-  CosmosTx tx = 5 [(gogoproto.nullable) = false];
+  string origin_nfttransfer_port = 5;
+  string origin_nfttransfer_channel_id = 6;
+  string origin_class_id = 7;
+  string nft_id = 8;
+  repeated google.protobuf.Any messages = 9;
 }
 
 message MsgSendRequestTransferResponse {
 }
 // this line is used by starport scaffolding # proto/tx/message
-
-// CosmosTx contains a list of sdk.Msg's. It should be used when sending transactions to an SDK host chain.
-message CosmosTx {
-  repeated google.protobuf.Any messages = 1;
-}

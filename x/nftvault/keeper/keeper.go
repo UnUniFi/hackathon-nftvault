@@ -30,8 +30,7 @@ type (
 		nftKeeper      nftkeeper.Keeper
 		transferKeeper transferkeeper.Keeper
 		// nftTransferKeeper nfttransferkeeper.Keeper
-		msgRouter   icatypes.MessageRouter
-		ics4Wrapper types.ICS4Wrapper
+		msgRouter icatypes.MessageRouter
 	}
 )
 

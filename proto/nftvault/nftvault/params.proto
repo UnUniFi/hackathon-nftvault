@@ -8,7 +8,7 @@ option go_package = "nftvault/x/nftvault/types";
 // Params defines the parameters for the module.
 message Params {
   option (gogoproto.goproto_stringer) = false;
-  
+  repeated AllowedChannel allowed_channels = 1;
 }
 
 message AllowedChannel {
