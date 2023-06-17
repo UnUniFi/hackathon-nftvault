@@ -20,7 +20,7 @@ appd tx nftvault local-execution [class-id] [nft-id] [path/to/sdk_msg.json] --fr
 - NFT that has `A` class-id and `1` nft-id in the chain `X`.
 - `F` is the vault account address of that NFT in the chain `X`.
 - The account `P` owns that NFT in the chain `X`.
-- The account `P` can execute msgs from `F`.
+- The account `P` can execute msgs from the account `F`.
 
 ### MsgRequestTransfer
 
@@ -43,7 +43,7 @@ appd tx nftvault request-transfer [src-port] [src-channel] [origin-nfttransfer-p
 - In the chain `Y`, that NFT has `ibc/123` class-id and `1` nft-id.
 - `G` is the vault account address of that NFT in the chain `Y`.
 - The account `P` owns that NFT in the chain `Y`.
-- The account `P` can request to transfer assets owned by `F` in the chain `X` to the account `G`.
+- The account `P` can request to transfer assets owned by the account `F` in the chain `X` to the account `G`.
 
 ### Queries
 
