@@ -1,20 +1,20 @@
 /* eslint-disable */
 import _m0 from "protobufjs/minimal";
+import { AllowedChannel } from "./allowed_channel";
 import { Params } from "./params";
 
 export const protobufPackage = "nftvault.nftvault";
 
 /** GenesisState defines the nftvault module's genesis state. */
 export interface GenesisState {
-  params:
-    | Params
-    | undefined;
-  /** this line is used by starport scaffolding # genesis/proto/state */
+  params: Params | undefined;
   portId: string;
+  /** this line is used by starport scaffolding # genesis/proto/state */
+  allowedChannelList: AllowedChannel[];
 }
 
 function createBaseGenesisState(): GenesisState {
-  return { params: undefined, portId: "" };
+  return { params: undefined, portId: "", allowedChannelList: [] };
 }
 
 export const GenesisState = {
@@ -24,6 +24,9 @@ export const GenesisState = {
     }
     if (message.portId !== "") {
       writer.uint32(18).string(message.portId);
+    }
+    for (const v of message.allowedChannelList) {
+      AllowedChannel.encode(v!, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -41,6 +44,9 @@ export const GenesisState = {
         case 2:
           message.portId = reader.string();
           break;
+        case 3:
+          message.allowedChannelList.push(AllowedChannel.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -53,6 +59,9 @@ export const GenesisState = {
     return {
       params: isSet(object.params) ? Params.fromJSON(object.params) : undefined,
       portId: isSet(object.portId) ? String(object.portId) : "",
+      allowedChannelList: Array.isArray(object?.allowedChannelList)
+        ? object.allowedChannelList.map((e: any) => AllowedChannel.fromJSON(e))
+        : [],
     };
   },
 
@@ -60,6 +69,11 @@ export const GenesisState = {
     const obj: any = {};
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
     message.portId !== undefined && (obj.portId = message.portId);
+    if (message.allowedChannelList) {
+      obj.allowedChannelList = message.allowedChannelList.map((e) => e ? AllowedChannel.toJSON(e) : undefined);
+    } else {
+      obj.allowedChannelList = [];
+    }
     return obj;
   },
 
@@ -69,6 +83,7 @@ export const GenesisState = {
       ? Params.fromPartial(object.params)
       : undefined;
     message.portId = object.portId ?? "";
+    message.allowedChannelList = object.allowedChannelList?.map((e) => AllowedChannel.fromPartial(e)) || [];
     return message;
   },
 };

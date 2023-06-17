@@ -5,6 +5,7 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "nftvault/nftvault/params.proto";
+import "nftvault/nftvault/allowed_channel.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "nftvault/x/nftvault/types";
@@ -15,7 +16,17 @@ service Query {
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/nftvault/nftvault/params";
   }
-  // this line is used by starport scaffolding # 2
+  // Queries a AllowedChannel by index.
+	rpc AllowedChannel(QueryGetAllowedChannelRequest) returns (QueryGetAllowedChannelResponse) {
+		option (google.api.http).get = "/nftvault/nftvault/allowed_channel/{channelId}";
+	}
+
+	// Queries a list of AllowedChannel items.
+	rpc AllowedChannelAll(QueryAllAllowedChannelRequest) returns (QueryAllAllowedChannelResponse) {
+		option (google.api.http).get = "/nftvault/nftvault/allowed_channel";
+	}
+
+// this line is used by starport scaffolding # 2
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -25,6 +36,24 @@ message QueryParamsRequest {}
 message QueryParamsResponse {
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetAllowedChannelRequest {
+	  string channelId = 1;
+
+}
+
+message QueryGetAllowedChannelResponse {
+	AllowedChannel allowedChannel = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllAllowedChannelRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllAllowedChannelResponse {
+	repeated AllowedChannel allowedChannel = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 // this line is used by starport scaffolding # 3

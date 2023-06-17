@@ -1,0 +1,11 @@
+syntax = "proto3";
+package nftvault.nftvault;
+
+option go_package = "nftvault/x/nftvault/types";
+
+message AllowedChannel {
+  string channelId = 1; 
+  string portId = 2; 
+  
+}
+

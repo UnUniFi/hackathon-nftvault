@@ -22,9 +22,31 @@ func TestGenesisState_Validate(t *testing.T) {
 			desc: "valid genesis state",
 			genState: &types.GenesisState{
 				PortId: types.PortID,
+				AllowedChannelList: []types.AllowedChannel{
+					{
+						ChannelId: "0",
+					},
+					{
+						ChannelId: "1",
+					},
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
+		},
+		{
+			desc: "duplicated allowedChannel",
+			genState: &types.GenesisState{
+				AllowedChannelList: []types.AllowedChannel{
+					{
+						ChannelId: "0",
+					},
+					{
+						ChannelId: "0",
+					},
+				},
+			},
+			valid: false,
 		},
 		// this line is used by starport scaffolding # types/genesis/testcase
 	} {

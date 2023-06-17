@@ -1,14 +1,15 @@
 import { Client, registry, MissingWalletError } from 'nftvault-client-ts'
 
+import { AllowedChannel } from "nftvault-client-ts/nftvault.nftvault/types"
 import { NftvaultPacketData } from "nftvault-client-ts/nftvault.nftvault/types"
 import { NoData } from "nftvault-client-ts/nftvault.nftvault/types"
 import { RequestTransferPacketData } from "nftvault-client-ts/nftvault.nftvault/types"
 import { RequestTransferPacketAck } from "nftvault-client-ts/nftvault.nftvault/types"
+import { CosmosTx } from "nftvault-client-ts/nftvault.nftvault/types"
 import { Params } from "nftvault-client-ts/nftvault.nftvault/types"
-import { AllowedChannel } from "nftvault-client-ts/nftvault.nftvault/types"
 
 
-export { NftvaultPacketData, NoData, RequestTransferPacketData, RequestTransferPacketAck, Params, AllowedChannel };
+export { AllowedChannel, NftvaultPacketData, NoData, RequestTransferPacketData, RequestTransferPacketAck, CosmosTx, Params };
 
 function initClient(vuexGetters) {
 	return new Client(vuexGetters['common/env/getEnv'], vuexGetters['common/wallet/signer'])
@@ -40,14 +41,17 @@ function getStructure(template) {
 const getDefaultState = () => {
 	return {
 				Params: {},
+				AllowedChannel: {},
+				AllowedChannelAll: {},
 				
 				_Structure: {
+						AllowedChannel: getStructure(AllowedChannel.fromPartial({})),
 						NftvaultPacketData: getStructure(NftvaultPacketData.fromPartial({})),
 						NoData: getStructure(NoData.fromPartial({})),
 						RequestTransferPacketData: getStructure(RequestTransferPacketData.fromPartial({})),
 						RequestTransferPacketAck: getStructure(RequestTransferPacketAck.fromPartial({})),
+						CosmosTx: getStructure(CosmosTx.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),
-						AllowedChannel: getStructure(AllowedChannel.fromPartial({})),
 						
 		},
 		_Registry: registry,
@@ -81,6 +85,18 @@ export default {
 						(<any> params).query=null
 					}
 			return state.Params[JSON.stringify(params)] ?? {}
+		},
+				getAllowedChannel: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.AllowedChannel[JSON.stringify(params)] ?? {}
+		},
+				getAllowedChannelAll: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.AllowedChannelAll[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -133,6 +149,54 @@ export default {
 				return getters['getParams']( { params: {...key}, query}) ?? {}
 			} catch (e) {
 				throw new Error('QueryClient:QueryParams API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryAllowedChannel({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const client = initClient(rootGetters);
+				let value= (await client.NftvaultNftvault.query.queryAllowedChannel( key.channelId)).data
+				
+					
+				commit('QUERY', { query: 'AllowedChannel', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryAllowedChannel', payload: { options: { all }, params: {...key},query }})
+				return getters['getAllowedChannel']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryAllowedChannel API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryAllowedChannelAll({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const client = initClient(rootGetters);
+				let value= (await client.NftvaultNftvault.query.queryAllowedChannelAll(query ?? undefined)).data
+				
+					
+				while (all && (<any> value).pagination && (<any> value).pagination.next_key!=null) {
+					let next_values=(await client.NftvaultNftvault.query.queryAllowedChannelAll({...query ?? {}, 'pagination.key':(<any> value).pagination.next_key} as any)).data
+					value = mergeResults(value, next_values);
+				}
+				commit('QUERY', { query: 'AllowedChannelAll', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryAllowedChannelAll', payload: { options: { all }, params: {...key},query }})
+				return getters['getAllowedChannelAll']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryAllowedChannelAll API Node Unavailable. Could not perform query: ' + e.message)
 				
 			}
 		},

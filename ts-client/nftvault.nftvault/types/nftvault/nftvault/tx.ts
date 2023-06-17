@@ -20,6 +20,11 @@ export interface MsgSendRequestTransfer {
   port: string;
   channelID: string;
   timeoutTimestamp: number;
+  originNfttransferPort: string;
+  originNfttransferChannelId: string;
+  originClassId: string;
+  nftId: string;
+  messages: Any[];
 }
 
 export interface MsgSendRequestTransferResponse {
@@ -145,7 +150,17 @@ export const MsgLocalExecutionResponse = {
 };
 
 function createBaseMsgSendRequestTransfer(): MsgSendRequestTransfer {
-  return { creator: "", port: "", channelID: "", timeoutTimestamp: 0 };
+  return {
+    creator: "",
+    port: "",
+    channelID: "",
+    timeoutTimestamp: 0,
+    originNfttransferPort: "",
+    originNfttransferChannelId: "",
+    originClassId: "",
+    nftId: "",
+    messages: [],
+  };
 }
 
 export const MsgSendRequestTransfer = {
@@ -161,6 +176,21 @@ export const MsgSendRequestTransfer = {
     }
     if (message.timeoutTimestamp !== 0) {
       writer.uint32(32).uint64(message.timeoutTimestamp);
+    }
+    if (message.originNfttransferPort !== "") {
+      writer.uint32(42).string(message.originNfttransferPort);
+    }
+    if (message.originNfttransferChannelId !== "") {
+      writer.uint32(50).string(message.originNfttransferChannelId);
+    }
+    if (message.originClassId !== "") {
+      writer.uint32(58).string(message.originClassId);
+    }
+    if (message.nftId !== "") {
+      writer.uint32(66).string(message.nftId);
+    }
+    for (const v of message.messages) {
+      Any.encode(v!, writer.uint32(74).fork()).ldelim();
     }
     return writer;
   },
@@ -184,6 +214,21 @@ export const MsgSendRequestTransfer = {
         case 4:
           message.timeoutTimestamp = longToNumber(reader.uint64() as Long);
           break;
+        case 5:
+          message.originNfttransferPort = reader.string();
+          break;
+        case 6:
+          message.originNfttransferChannelId = reader.string();
+          break;
+        case 7:
+          message.originClassId = reader.string();
+          break;
+        case 8:
+          message.nftId = reader.string();
+          break;
+        case 9:
+          message.messages.push(Any.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -198,6 +243,13 @@ export const MsgSendRequestTransfer = {
       port: isSet(object.port) ? String(object.port) : "",
       channelID: isSet(object.channelID) ? String(object.channelID) : "",
       timeoutTimestamp: isSet(object.timeoutTimestamp) ? Number(object.timeoutTimestamp) : 0,
+      originNfttransferPort: isSet(object.originNfttransferPort) ? String(object.originNfttransferPort) : "",
+      originNfttransferChannelId: isSet(object.originNfttransferChannelId)
+        ? String(object.originNfttransferChannelId)
+        : "",
+      originClassId: isSet(object.originClassId) ? String(object.originClassId) : "",
+      nftId: isSet(object.nftId) ? String(object.nftId) : "",
+      messages: Array.isArray(object?.messages) ? object.messages.map((e: any) => Any.fromJSON(e)) : [],
     };
   },
 
@@ -207,6 +259,16 @@ export const MsgSendRequestTransfer = {
     message.port !== undefined && (obj.port = message.port);
     message.channelID !== undefined && (obj.channelID = message.channelID);
     message.timeoutTimestamp !== undefined && (obj.timeoutTimestamp = Math.round(message.timeoutTimestamp));
+    message.originNfttransferPort !== undefined && (obj.originNfttransferPort = message.originNfttransferPort);
+    message.originNfttransferChannelId !== undefined
+      && (obj.originNfttransferChannelId = message.originNfttransferChannelId);
+    message.originClassId !== undefined && (obj.originClassId = message.originClassId);
+    message.nftId !== undefined && (obj.nftId = message.nftId);
+    if (message.messages) {
+      obj.messages = message.messages.map((e) => e ? Any.toJSON(e) : undefined);
+    } else {
+      obj.messages = [];
+    }
     return obj;
   },
 
@@ -216,6 +278,11 @@ export const MsgSendRequestTransfer = {
     message.port = object.port ?? "";
     message.channelID = object.channelID ?? "";
     message.timeoutTimestamp = object.timeoutTimestamp ?? 0;
+    message.originNfttransferPort = object.originNfttransferPort ?? "";
+    message.originNfttransferChannelId = object.originNfttransferChannelId ?? "";
+    message.originClassId = object.originClassId ?? "";
+    message.nftId = object.nftId ?? "";
+    message.messages = object.messages?.map((e) => Any.fromPartial(e)) || [];
     return message;
   },
 };

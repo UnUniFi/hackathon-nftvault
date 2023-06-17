@@ -1,5 +1,6 @@
 /* eslint-disable */
 import _m0 from "protobufjs/minimal";
+import { Any } from "../../google/protobuf/any";
 
 export const protobufPackage = "nftvault.nftvault";
 
@@ -16,10 +17,18 @@ export interface NoData {
 
 /** RequestTransferPacketData defines a struct for the packet payload */
 export interface RequestTransferPacketData {
+  classId: string;
+  nftId: string;
+  tx: CosmosTx | undefined;
 }
 
 /** RequestTransferPacketAck defines a struct for the packet acknowledgment */
 export interface RequestTransferPacketAck {
+}
+
+/** CosmosTx contains a list of sdk.Msg's. It should be used when sending transactions to an SDK host chain. */
+export interface CosmosTx {
+  messages: Any[];
 }
 
 function createBaseNftvaultPacketData(): NftvaultPacketData {
@@ -129,11 +138,20 @@ export const NoData = {
 };
 
 function createBaseRequestTransferPacketData(): RequestTransferPacketData {
-  return {};
+  return { classId: "", nftId: "", tx: undefined };
 }
 
 export const RequestTransferPacketData = {
-  encode(_: RequestTransferPacketData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: RequestTransferPacketData, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.classId !== "") {
+      writer.uint32(10).string(message.classId);
+    }
+    if (message.nftId !== "") {
+      writer.uint32(18).string(message.nftId);
+    }
+    if (message.tx !== undefined) {
+      CosmosTx.encode(message.tx, writer.uint32(26).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -144,6 +162,15 @@ export const RequestTransferPacketData = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
+        case 1:
+          message.classId = reader.string();
+          break;
+        case 2:
+          message.nftId = reader.string();
+          break;
+        case 3:
+          message.tx = CosmosTx.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -152,17 +179,27 @@ export const RequestTransferPacketData = {
     return message;
   },
 
-  fromJSON(_: any): RequestTransferPacketData {
-    return {};
+  fromJSON(object: any): RequestTransferPacketData {
+    return {
+      classId: isSet(object.classId) ? String(object.classId) : "",
+      nftId: isSet(object.nftId) ? String(object.nftId) : "",
+      tx: isSet(object.tx) ? CosmosTx.fromJSON(object.tx) : undefined,
+    };
   },
 
-  toJSON(_: RequestTransferPacketData): unknown {
+  toJSON(message: RequestTransferPacketData): unknown {
     const obj: any = {};
+    message.classId !== undefined && (obj.classId = message.classId);
+    message.nftId !== undefined && (obj.nftId = message.nftId);
+    message.tx !== undefined && (obj.tx = message.tx ? CosmosTx.toJSON(message.tx) : undefined);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<RequestTransferPacketData>, I>>(_: I): RequestTransferPacketData {
+  fromPartial<I extends Exact<DeepPartial<RequestTransferPacketData>, I>>(object: I): RequestTransferPacketData {
     const message = createBaseRequestTransferPacketData();
+    message.classId = object.classId ?? "";
+    message.nftId = object.nftId ?? "";
+    message.tx = (object.tx !== undefined && object.tx !== null) ? CosmosTx.fromPartial(object.tx) : undefined;
     return message;
   },
 };
@@ -202,6 +239,57 @@ export const RequestTransferPacketAck = {
 
   fromPartial<I extends Exact<DeepPartial<RequestTransferPacketAck>, I>>(_: I): RequestTransferPacketAck {
     const message = createBaseRequestTransferPacketAck();
+    return message;
+  },
+};
+
+function createBaseCosmosTx(): CosmosTx {
+  return { messages: [] };
+}
+
+export const CosmosTx = {
+  encode(message: CosmosTx, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.messages) {
+      Any.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CosmosTx {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCosmosTx();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.messages.push(Any.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CosmosTx {
+    return { messages: Array.isArray(object?.messages) ? object.messages.map((e: any) => Any.fromJSON(e)) : [] };
+  },
+
+  toJSON(message: CosmosTx): unknown {
+    const obj: any = {};
+    if (message.messages) {
+      obj.messages = message.messages.map((e) => e ? Any.toJSON(e) : undefined);
+    } else {
+      obj.messages = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<CosmosTx>, I>>(object: I): CosmosTx {
+    const message = createBaseCosmosTx();
+    message.messages = object.messages?.map((e) => Any.fromPartial(e)) || [];
     return message;
   },
 };

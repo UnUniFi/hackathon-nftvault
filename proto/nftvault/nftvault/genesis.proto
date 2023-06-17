@@ -3,6 +3,7 @@ package nftvault.nftvault;
 
 import "gogoproto/gogo.proto";
 import "nftvault/nftvault/params.proto";
+import "nftvault/nftvault/allowed_channel.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "nftvault/x/nftvault/types";
@@ -11,5 +12,6 @@ option go_package = "nftvault/x/nftvault/types";
 message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
   string port_id = 2;
+  repeated AllowedChannel allowedChannelList = 3 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }
