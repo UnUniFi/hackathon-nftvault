@@ -23,6 +23,7 @@ appd tx nftvault request-transfer [src-port] [src-channel] [origin-nfttransfer-p
 
 - The address of the `key-name` must be the owner of the NFT that originally has `origin-class-id` and `nft-id` in the origin chain and has been transferred to this chain.
 - The msg that in the `sdk_msg.json` must be `MsgTransfer` of ICS20 `transfer` module or `MsgTransfer` of ICS721 `nft-transfer` module.
+- The msg that in the `sdk_msg.json` will be executed in the origin chain of the NFT that originally has `origin-class-id` and `nft-id` in the origin chain and has been transferred to this chain.
 - The sender of the msg that in the `sdk_msg.json` must be the address of the vault account of the NFT that has the `origin-class-id` and `nft-id` in the origin chain.
 - The recipient of the msg that in the `sdk_msg.json` must be the address of the vault account of the NFT that originally has `origin-class-id` and `nft-id` in the origin chain and has been transferred to this chain.
 
