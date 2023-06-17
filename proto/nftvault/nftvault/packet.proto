@@ -21,9 +21,11 @@ message NoData {
 
 // RequestTransferPacketData defines a struct for the packet payload
 message RequestTransferPacketData {
-    string class_id = 1;
-    string nft_id = 2;
-    CosmosTx tx = 3 [(gogoproto.nullable) = false];
+    string origin_nfttransfer_port = 1;
+    string origin_nfttransfer_channel_id = 2;
+    string origin_class_id = 3;
+    string nft_id = 4;
+    CosmosTx tx = 5 [(gogoproto.nullable) = false];
 }
 
 // RequestTransferPacketAck defines a struct for the packet acknowledgment

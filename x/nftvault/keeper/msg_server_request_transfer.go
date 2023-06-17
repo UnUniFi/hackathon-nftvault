@@ -40,7 +40,9 @@ func (k msgServer) SendRequestTransfer(goCtx context.Context, msg *types.MsgSend
 	// Construct the packet
 	var packet types.RequestTransferPacketData
 
-	packet.ClassId = msg.OriginClassId
+	packet.OriginNfttransferPort = msg.OriginNfttransferPort
+	packet.OriginNfttransferChannelId = msg.OriginNfttransferChannelId
+	packet.OriginClassId = msg.OriginClassId
 	packet.NftId = msg.NftId
 	packet.Tx = types.CosmosTx{
 		Messages: msg.Messages,

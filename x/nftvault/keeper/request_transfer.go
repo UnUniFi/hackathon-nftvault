@@ -77,7 +77,21 @@ func (k Keeper) OnRecvRequestTransferPacket(ctx sdk.Context, packet channeltypes
 	}
 
 	// TODO: packet reception logic
-	vaultAddress := types.VaultAccountAddress(data.ClassId, data.NftId)
+	allowed, found := k.GetAllowedChannel(ctx, packet.SourceChannel)
+	if !found {
+		return packetAck, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "channel not allowed")
+	}
+	if allowed.PortId != packet.SourcePort {
+		return packetAck, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "channel not allowed")
+	}
+
+	escrowAddress := nfttransfertypes.GetEscrowAddress(data.OriginNfttransferPort, data.OriginNfttransferChannelId)
+	owner := k.nftKeeper.GetOwner(ctx, data.OriginClassId, data.NftId)
+	if escrowAddress.String() != owner.String() {
+		return packetAck, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "specified vault nft is not escrowed")
+	}
+
+	vaultAddress := types.VaultAccountAddress(data.OriginClassId, data.NftId)
 
 	for _, msgAny := range data.Tx.Messages {
 		var msg sdk.Msg
