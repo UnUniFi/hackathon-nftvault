@@ -15,3 +15,6 @@ sleep 10
 # start relayers
 sh network/relayer/rly-init.sh
 sh network/relayer/rly-start.sh
+
+# channels
+nftvaultd query ibc channel channels

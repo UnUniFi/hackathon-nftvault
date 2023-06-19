@@ -110,6 +110,7 @@ import (
 	nftvaultmodule "nftvault/x/nftvault"
 	nftvaultmodulekeeper "nftvault/x/nftvault/keeper"
 	nftvaultmoduletypes "nftvault/x/nftvault/types"
+
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
 	appparams "nftvault/app/params"
@@ -183,6 +184,7 @@ var (
 		stakingtypes.NotBondedPoolName: {authtypes.Burner, authtypes.Staking},
 		govtypes.ModuleName:            {authtypes.Burner},
 		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
+		nft.ModuleName:                 nil,
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 )
