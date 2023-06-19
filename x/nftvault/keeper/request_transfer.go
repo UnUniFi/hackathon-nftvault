@@ -93,6 +93,8 @@ func (k Keeper) OnRecvRequestTransferPacket(ctx sdk.Context, packet channeltypes
 
 	vaultAddress := types.VaultAccountAddress(data.OriginClassId, data.NftId)
 
+	var msgs []sdk.Msg
+
 	for _, msgAny := range data.Tx.Messages {
 		var msg sdk.Msg
 		k.cdc.UnpackAny(msgAny, &msg)
@@ -100,15 +102,21 @@ func (k Keeper) OnRecvRequestTransferPacket(ctx sdk.Context, packet channeltypes
 		switch msg := msg.(type) {
 		case *transfertypes.MsgTransfer:
 			if msg.Sender != vaultAddress.String() {
-				return packetAck, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "invalid receiver")
+				return packetAck, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "invalid sender")
 			}
 		case *nfttransfertypes.MsgTransfer:
 			if msg.Sender != vaultAddress.String() {
-				return packetAck, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "invalid receiver")
+				return packetAck, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "invalid sender")
 			}
 		default:
 			return packetAck, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, "unknown message type")
 		}
+
+		msgs = append(msgs, msg)
+	}
+
+	for _, msg := range msgs {
+		k.executeMsg(ctx, msg)
 	}
 
 	return packetAck, nil
