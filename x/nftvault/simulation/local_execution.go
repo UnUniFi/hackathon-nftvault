@@ -24,6 +24,6 @@ func SimulateMsgLocalExecution(
 
 		// TODO: Handling the LocalExecution simulation
 
-		return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "LocalExecution simulation not implemented"), nil, nil
+		return simtypes.NoOpMsg(types.ModuleName, msg.String(), "LocalExecution simulation not implemented"), nil, nil
 	}
 }

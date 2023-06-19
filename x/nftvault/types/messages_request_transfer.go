@@ -6,8 +6,6 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-const TypeMsgSendRequestTransfer = "send_request_transfer"
-
 var _ sdk.Msg = &MsgSendRequestTransfer{}
 
 func NewMsgSendRequestTransfer(
@@ -43,25 +41,12 @@ func NewMsgSendRequestTransfer(
 	}
 }
 
-func (msg *MsgSendRequestTransfer) Route() string {
-	return RouterKey
-}
-
-func (msg *MsgSendRequestTransfer) Type() string {
-	return TypeMsgSendRequestTransfer
-}
-
 func (msg *MsgSendRequestTransfer) GetSigners() []sdk.AccAddress {
 	creator, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		panic(err)
 	}
 	return []sdk.AccAddress{creator}
-}
-
-func (msg *MsgSendRequestTransfer) GetSignBytes() []byte {
-	bz := ModuleCdc.MustMarshalJSON(msg)
-	return sdk.MustSortJSON(bz)
 }
 
 func (msg *MsgSendRequestTransfer) ValidateBasic() error {
